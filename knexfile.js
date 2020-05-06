@@ -18,6 +18,7 @@ module.exports = {
     seeds: {
       directory: './knex/seeds',
     },
+    //debug: true
   }
 
 };

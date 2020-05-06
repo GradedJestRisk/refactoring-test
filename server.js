@@ -1,5 +1,5 @@
-const knex = require('./knex/knex.js');
+const user = require('./src/user');
 
-knex.raw('SELECT current_database() AS "databaseName"' ).then((status) => {
-    console.log('Successfully connected to ' + status.rows[0].databaseName);
-});
+(async function () {
+    await user.changeEmail({id: 0, newEmail: 'employee-one@this-corp.com'});
+})()
