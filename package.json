@@ -4,7 +4,13 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/**/*.test.js",
+    "husky": {
+      "hooks": {
+        "pre-commit": "npm test",
+        "pre-push": "npm test"
+      }
+    }
   },
   "repository": {
     "type": "git",
@@ -18,7 +24,15 @@
   },
   "homepage": "https://github.com/GradedJestRisk/refactoring-test#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "knex": "^0.21.1",
     "pg": "^8.0.3"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "husky": "^4.2.5",
+    "mocha": "^7.1.2",
+    "nock": "^12.0.3"
   }
 }

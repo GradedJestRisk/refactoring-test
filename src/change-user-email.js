@@ -1,8 +1,8 @@
-const database = require('./database');
-const messageBus = require('./message-bus');
+const database = require('./out-of-process-dependencies/managed/database');
+const messageBus = require('./out-of-process-dependencies/unmanaged/propagate-change');
 const userType = {Customer: 1, Employee: 2};
 
-const changeEmail = async function ({id, newEmail}) {
+const changeUserEmail = async function ({id, newEmail}) {
 
     const data = await database.getUserById(id);
     const user = {};
@@ -15,7 +15,7 @@ const changeEmail = async function ({id, newEmail}) {
         return;
     }
 
-    const userWithEmail = await database.getUserByEmail({email: newEmail});
+    const userWithEmail = await database.getUserByEmail(newEmail);
     const isEmailTaken = (userWithEmail.length !== 0);
     if (isEmailTaken) {
         return "Email is taken";
@@ -41,8 +41,8 @@ const changeEmail = async function ({id, newEmail}) {
     user.type = newType;
 
     await database.saveUser(user);
-    messageBus.sendEmailChange({id, newEmail});
+    await messageBus.propagateEmailChange({id, newEmail});
 
 }
 
-module.exports = {changeEmail};
+module.exports = changeUserEmail;

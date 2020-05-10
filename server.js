@@ -1,5 +1,7 @@
-const user = require('./src/user');
+const changeUserEmail = require('./src/change-user-email');
+const SUCCESS_RETURN_CODE = 0;
 
 (async function () {
-    await user.changeEmail({id: 0, newEmail: 'employee-one@this-corp.com'});
+    await changeUserEmail({id: 0, newEmail: 'employee-one@this-corp.com'});
+    process.exit(SUCCESS_RETURN_CODE);
 })()
