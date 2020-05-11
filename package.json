@@ -4,12 +4,11 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "mocha test/**/*.test.js",
-    "husky": {
-      "hooks": {
-        "pre-commit": "npm test",
-        "pre-push": "npm test"
-      }
+    "test": "mocha --exit test/**/*.test.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm test"
     }
   },
   "repository": {
