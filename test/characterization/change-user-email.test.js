@@ -1,4 +1,21 @@
-const changeUserEmail = require('../../src/change-user-email');
+let sutPath;
+
+const sutPathProceduralDB = '../../src/procedural-db/change-user-email';
+const sutPathProceduralJS = '../../src/procedural-js/change-user-email';
+
+if ( process.env.SUT === 'PROCEDURAL_JS' ){
+    sutPath = sutPathProceduralJS;
+} else if (process.env.SUT === 'PROCEDURAL_DB'){
+    sutPath = sutPathProceduralDB;
+} else {
+    // used for interactive
+   sutPath = sutPathProceduralDB;
+}
+
+ console.log('SUT is' + sutPath);
+
+const changeUserEmail = require(sutPath);
+
 const chai = require('chai');
 const db = require('./database-helper');
 const nock = require('nock')

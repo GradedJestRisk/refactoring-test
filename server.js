@@ -1,4 +1,4 @@
-const changeUserEmail = require('./src/change-user-email');
+const changeUserEmail = require('./src/procedural-js/change-user-email');
 const SUCCESS_RETURN_CODE = 0;
 
 (async function () {

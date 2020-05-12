@@ -4,7 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --exit test/**/*.test.js"
+    "compile-db-code": "psql -U postgres -d refactoring_test -h localhost -p 8432 < src/procedural-db/change-user-email.sql",
+    "test": "mocha --exit test/**/*.test.js",
+    "test:procedural-js": "SUT=PROCEDURAL_JS mocha --exit test/characterization/change-user-email.test.js",
+    "test:procedural-db": "npm run compile-db-code && SUT=PROCEDURAL_DB mocha --exit test/characterization/change-user-email.test.js"
   },
   "husky": {
     "hooks": {
