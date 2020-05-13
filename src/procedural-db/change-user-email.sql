@@ -3,10 +3,6 @@ CREATE OR REPLACE FUNCTION public.change_user_email(
 	newemail text)
     RETURNS text
     LANGUAGE 'plpgsql'
-
-    COST 100
-    VOLATILE
-
 AS $BODY$DECLARE
     message TEXT;
 BEGIN
