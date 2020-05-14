@@ -1,6 +1,7 @@
+DROP FUNCTION change_user_email;
 CREATE OR REPLACE FUNCTION public.change_user_email(
 	id integer,
-	newemail text)
+	new_email text)
     RETURNS text
     LANGUAGE 'plpgsql'
 AS $BODY$DECLARE
@@ -9,7 +10,7 @@ BEGIN
 	message := 'Email is taken';
 
     RAISE NOTICE 'id : %', id;
-    RAISE NOTICE 'email: %', newEmail;
+    RAISE NOTICE 'email: %', new_email;
 
 	UPDATE "user"
 	SET email = 'employee-one@mycorp.com'
