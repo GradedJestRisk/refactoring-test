@@ -3,16 +3,16 @@ let sutPath;
 const sutPathProceduralDB = '../../src/procedural-db/change-user-email';
 const sutPathProceduralJS = '../../src/procedural-js/change-user-email';
 
-if ( process.env.SUT === 'PROCEDURAL_JS' ){
+if (process.env.SUT === 'PROCEDURAL_JS') {
     sutPath = sutPathProceduralJS;
-} else if (process.env.SUT === 'PROCEDURAL_DB'){
+} else if (process.env.SUT === 'PROCEDURAL_DB') {
     sutPath = sutPathProceduralDB;
 } else {
     // used for interactive
-   sutPath = sutPathProceduralDB;
+    sutPath = sutPathProceduralDB;
 }
 
- console.log('SUT is' + sutPath);
+console.log('SUT is' + sutPath);
 
 const changeUserEmail = require(sutPath);
 
@@ -26,152 +26,172 @@ chai.use(require('chai-as-promised'));
 
 const userType = {Customer: 1, Employee: 2};
 
-describe('when user exists', () => {
+describe('change user email', () => {
 
-    beforeEach(async () => {
-        await db.removeAllUsers();
-    });
 
-    afterEach(() => {
-        nock.cleanAll();
-    });
+    describe('when user exists', () => {
 
-    describe('and email is not taken', () => {
-
-        it('email should be updated', async () => {
-
-            const user = {id: 0, email: 'employee_one@this-corp.com', type: 2, isEmailConfirmed: true};
-            const newEmail = 'employee-one@mycorp.com';
-            await db.addUser(user);
-
-            const emailUpdate = {id: user.id, newEmail};
-            await changeUserEmail(emailUpdate);
-
-            const actualUser = await db.getUser(user.id);
-            actualUser.email.should.eq(newEmail);
-
+        beforeEach(async () => {
+            await db.removeAllUsers();
         });
 
-        it('email change should be propagated', async () => {
-
-            const baseUrl = 'http://httpbin.org';
-            const route = '/put';
-
-            const OK_RESPONSE_STATUS = 200;
-
-            const remoteAPICall = nock(baseUrl)
-                .put(route)
-                .reply(OK_RESPONSE_STATUS, {});
-
-            const user = {id: 0, email: 'employee_one@this-corp.com', type: 2, isEmailConfirmed: true};
-            const newEmail = 'employee-one@mycorp.com';
-            await db.addUser(user);
-
-            const emailUpdate = {id: user.id, newEmail};
-            await changeUserEmail(emailUpdate);
-
-            const actualUser = await db.getUser(user.id);
-            remoteAPICall.isDone().should.be.true;
+        afterEach(() => {
+            nock.cleanAll();
         });
 
-        describe(' employee count must stay up-to-date', () => {
+        describe('and email is not taken', () => {
 
-            beforeEach(() => {
-                db.removeAllUsers();
-                db.removeCompany();
-                db.addCompany();
-            });
+            it('email should be updated', async () => {
 
-            it('if email domain stay the same, employee count should stay the same', async () => {
-
-                const user = {id: 0, email: 'user_one@this-corp.com', type: userType.Customer, isEmailConfirmed: true};
+                const user = {id: 0, email: 'employee_one@this-corp.com', type: 2, isEmailConfirmed: true};
+                const newEmail = 'employee-one@mycorp.com';
                 await db.addUser(user);
-                const newEmail = 'user-one@mthis-corp.com';
-                const employeeCount = await db.getCompanyEmployeeCount();
 
                 const emailUpdate = {id: user.id, newEmail};
                 await changeUserEmail(emailUpdate);
 
-                const actualEmployeeCount = await db.getCompanyEmployeeCount();
-                actualEmployeeCount.should.eq(employeeCount);
+                const actualUser = await db.getUser(user.id);
+                actualUser.email.should.eq(newEmail);
+
             });
 
-            it('if email is changed from not corporate to corporate, employee count should be incremented ', async () => {
+            it('email change should be propagated', async () => {
 
-                const user = {id: 0, email: 'user_one@that-corp.com', type: userType.Customer, isEmailConfirmed: true};
+                const baseUrl = 'http://httpbin.org';
+                const route = '/put';
+
+                const OK_RESPONSE_STATUS = 200;
+
+                const remoteAPICall = nock(baseUrl)
+                    .put(route)
+                    .reply(OK_RESPONSE_STATUS, {});
+
+                const user = {id: 0, email: 'employee_one@this-corp.com', type: 2, isEmailConfirmed: true};
+                const newEmail = 'employee-one@mycorp.com';
                 await db.addUser(user);
-                const newEmail = 'user_one@this-corp.com';
-                const employeeCount = await db.getCompanyEmployeeCount();
 
                 const emailUpdate = {id: user.id, newEmail};
                 await changeUserEmail(emailUpdate);
 
-                const actualEmployeeCount = await db.getCompanyEmployeeCount();
-                actualEmployeeCount.should.eq(employeeCount + 1);
-
+                const actualUser = await db.getUser(user.id);
+                remoteAPICall.isDone().should.be.true;
             });
 
-            it('if email is changed from corporate to not corporate, employee count should be decremented', async () => {
+            describe(' employee count must stay up-to-date', () => {
 
-                const user = {id: 0, email: 'user_one@this-corp.com', type: userType.Employee, isEmailConfirmed: true};
-                await db.addUser(user);
-                const employeeCount = await db.getCompanyEmployeeCount();
-                const newEmail = 'user_one@that-corp.com';
+                beforeEach(() => {
+                    db.removeAllUsers();
+                    db.removeCompany();
+                    db.addCompany();
+                });
+
+                it('if email domain stay the same, employee count should stay the same', async () => {
+
+                    const user = {
+                        id: 0,
+                        email: 'user_one@this-corp.com',
+                        type: userType.Customer,
+                        isEmailConfirmed: true
+                    };
+                    await db.addUser(user);
+                    const newEmail = 'user-one@mthis-corp.com';
+                    const employeeCount = await db.getCompanyEmployeeCount();
+
+                    const emailUpdate = {id: user.id, newEmail};
+                    await changeUserEmail(emailUpdate);
+
+                    const actualEmployeeCount = await db.getCompanyEmployeeCount();
+                    actualEmployeeCount.should.eq(employeeCount);
+                });
+
+                it('if email is changed from not corporate to corporate, employee count should be incremented ', async () => {
+
+                    const user = {
+                        id: 0,
+                        email: 'user_one@that-corp.com',
+                        type: userType.Customer,
+                        isEmailConfirmed: true
+                    };
+                    await db.addUser(user);
+                    const newEmail = 'user_one@this-corp.com';
+                    const employeeCount = await db.getCompanyEmployeeCount();
+
+                    const emailUpdate = {id: user.id, newEmail};
+                    await changeUserEmail(emailUpdate);
+
+                    const actualEmployeeCount = await db.getCompanyEmployeeCount();
+                    actualEmployeeCount.should.eq(employeeCount + 1);
+
+                });
+
+                it('if email is changed from corporate to not corporate, employee count should be decremented', async () => {
+
+                    const user = {
+                        id: 0,
+                        email: 'user_one@this-corp.com',
+                        type: userType.Employee,
+                        isEmailConfirmed: true
+                    };
+                    await db.addUser(user);
+                    const employeeCount = await db.getCompanyEmployeeCount();
+                    const newEmail = 'user_one@that-corp.com';
+                    const emailUpdate = {id: user.id, newEmail};
+
+                    await changeUserEmail(emailUpdate);
+
+                    const actualEmployeeCount = await db.getCompanyEmployeeCount();
+                    actualEmployeeCount.should.eq(employeeCount - 1);
+
+                });
+
+            });
+        });
+
+        describe('and email is taken', () => {
+
+            it('it should return a message', async () => {
+
+                const user = {id: 0, email: 'employee_one@this-corp.com', type: 2, isEmailConfirmed: true};
+                const newEmail = 'employee-one@mycorp.com';
+                const userSameEmail = {id: 1, email: newEmail, type: 2, isEmailConfirmed: true};
+                await db.addUsers([user, userSameEmail]);
+
                 const emailUpdate = {id: user.id, newEmail};
+                const response = await changeUserEmail(emailUpdate);
 
+                response.should.eq('Email is taken');
+            });
+
+            it('email should not be updated', async () => {
+
+                const user = {id: 0, email: 'employee_one@this-corp.com', type: 2, isEmailConfirmed: true};
+                const newEmail = 'employee-one@mycorp.com';
+                const userSameEmail = {id: 1, email: newEmail, type: 2, isEmailConfirmed: true};
+                await db.addUsers([user, userSameEmail]);
+
+                const emailUpdate = {id: user.id, newEmail};
                 await changeUserEmail(emailUpdate);
 
-                const actualEmployeeCount = await db.getCompanyEmployeeCount();
-                actualEmployeeCount.should.eq(employeeCount - 1);
-
+                const actualUser = await db.getUser(user.id);
+                actualUser.email.should.eq(user.email);
             });
-
         });
     });
 
-    describe('and email is taken', () => {
+    describe('when users does not exists', () => {
 
-        it('it should return a message', async () => {
+        beforeEach(async () => {
+            await db.removeAllUsers();
+        });
 
-            const user = {id: 0, email: 'employee_one@this-corp.com', type: 2, isEmailConfirmed: true};
+        it('should throw undefined email', async () => {
+            await db.removeAllUsers();
             const newEmail = 'employee-one@mycorp.com';
-            const userSameEmail = {id: 1, email: newEmail, type: 2, isEmailConfirmed: true};
-            await db.addUsers([user, userSameEmail]);
+            const emailUpdate = {id: 1, newEmail};
 
-            const emailUpdate = {id: user.id, newEmail};
-            const response = await changeUserEmail(emailUpdate);
-
-            response.should.eq('Email is taken');
-        });
-
-        it('email should not be updated', async () => {
-
-            const user = {id: 0, email: 'employee_one@this-corp.com', type: 2, isEmailConfirmed: true};
-            const newEmail = 'employee-one@mycorp.com';
-            const userSameEmail = {id: 1, email: newEmail, type: 2, isEmailConfirmed: true};
-            await db.addUsers([user, userSameEmail]);
-
-            const emailUpdate = {id: user.id, newEmail};
-            await changeUserEmail(emailUpdate);
-
-            const actualUser = await db.getUser(user.id);
-            actualUser.email.should.eq(user.email);
+            const rejectionMessage = "Cannot read property 'email' of undefined";
+            await expect(changeUserEmail(emailUpdate)).to.be.rejectedWith(rejectionMessage);
         });
     });
-});
 
-describe('when users does not exists', () => {
-
-    beforeEach(async () => {
-        await db.removeAllUsers();
-    });
-
-    it('should throw undefined email', async () => {
-        await db.removeAllUsers();
-        const newEmail = 'employee-one@mycorp.com';
-        const emailUpdate = {id: 1, newEmail};
-
-        const rejectionMessage = "Cannot read property 'email' of undefined";
-        await expect(changeUserEmail(emailUpdate)).to.be.rejectedWith(rejectionMessage);
-    });
 });
