@@ -9,7 +9,7 @@ if ( process.env.SUT === 'PROCEDURAL_JS' ){
     sutPath = sutPathProceduralDB;
 } else {
     // used for interactive
-   sutPath = sutPathProceduralJS;
+   sutPath = sutPathProceduralDB;
 }
 
  console.log('SUT is' + sutPath);
