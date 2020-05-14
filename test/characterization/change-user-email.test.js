@@ -9,7 +9,7 @@ if ( process.env.SUT === 'PROCEDURAL_JS' ){
     sutPath = sutPathProceduralDB;
 } else {
     // used for interactive
-   sutPath = sutPathProceduralDB;
+   sutPath = sutPathProceduralJS;
 }
 
  console.log('SUT is' + sutPath);
@@ -166,11 +166,12 @@ describe('when users does not exists', () => {
         await db.removeAllUsers();
     });
 
-    it('should throw)', async () => {
+    it('should throw undefined email', async () => {
         await db.removeAllUsers();
         const newEmail = 'employee-one@mycorp.com';
         const emailUpdate = {id: 1, newEmail};
 
-        await expect(changeUserEmail(emailUpdate)).to.be.rejected;
+        const rejectionMessage = "Cannot read property 'email' of undefined";
+        await expect(changeUserEmail(emailUpdate)).to.be.rejectedWith(rejectionMessage);
     });
 });
