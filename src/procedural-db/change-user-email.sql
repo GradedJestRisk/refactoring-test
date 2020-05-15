@@ -91,14 +91,26 @@ BEGIN
     -- If so, update company employee count
     IF ( actual_user_type = CUSTOMER_TYPE AND new_user_type = EMPLOYEE_TYPE) THEN
         RAISE NOTICE 'Changed from customer to employee';
+
+        UPDATE "user"
+        SET type = EMPLOYEE_TYPE
+        WHERE "user"."id" = p_id;
+
         UPDATE "company"
 	    SET "numberOfEmployees" = "numberOfEmployees" + 1;
+
     END IF;
 
     IF ( actual_user_type = EMPLOYEE_TYPE AND new_user_type = CUSTOMER_TYPE) THEN
         RAISE NOTICE 'Changed from employee to customer';
+        
+        UPDATE "user"
+        SET type = CUSTOMER_TYPE
+        WHERE "user"."id" = p_id;
+
         UPDATE "company"
 	    SET "numberOfEmployees" = "numberOfEmployees" - 1;
+
     END IF;
 
     -- Propagate changes
