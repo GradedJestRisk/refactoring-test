@@ -7,6 +7,7 @@ This code* has been ported from a copyrighted C# version, included in the [Unit 
 
 *: except PostgreSQL PL/SQL version, that I wrote by myself. Refered to as pg-pl-sql in codebase, it'a procedural (imperative) language, executed by the database. Basically, it allows mixing "functional" SQL statements together using basic imperative structures (control flow, variables, array). The aim of using such an unusual programming language is to show cost/benefits of such a compact implementation.
 
+Regarding hexagonal architecture, folders are named according to  [OCTO blog post](https://blog.octo.com/en/hexagonal-architecture-three-principles-and-an-implementation-example/)
 # Scope
 Only entreprise applications are in the scope.
 > An entreprise application is an application that aims at automating or assisting an organization's inner
