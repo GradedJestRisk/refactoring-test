@@ -1,4 +1,4 @@
-const knex = require('../../knex/knex');
+const knex = require('../../../knex/knex');
 
 const changeUserEmail = async function ({id, newEmail}) {
     const query = 'SELECT change_user_email( p_id :=' + id + ',  p_new_email := \'' + newEmail + '\')';

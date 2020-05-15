@@ -1,7 +1,7 @@
 let sutPath;
 
-const sutPathProceduralDB = '../../src/procedural-db/change-user-email';
-const sutPathProceduralJS = '../../src/procedural-js/change-user-email';
+const sutPathProceduralDB = '../../src/procedural/pg-pl-sql/change-user-email.js';
+const sutPathProceduralJS = '../../src/procedural/javascript/change-user-email.js';
 
 if (process.env.SUT === 'PROCEDURAL_JS') {
     sutPath = sutPathProceduralJS;

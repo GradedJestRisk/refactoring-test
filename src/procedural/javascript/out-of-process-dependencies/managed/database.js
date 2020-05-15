@@ -1,4 +1,4 @@
-const knex = require('../../../../knex/knex');
+const knex = require('../../../../../knex/knex');
 
 const getUserById = async function (id) {
     return knex('user').where({id}).first();
