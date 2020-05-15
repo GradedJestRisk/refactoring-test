@@ -25,6 +25,7 @@ chai.should();
 chai.use(require('chai-as-promised'));
 
 const userType = {Customer: 1, Employee: 2};
+const COMPANY_DOMAIN_NAME = 'this-corp.com';
 
 describe('change user email', () => {
 
@@ -52,6 +53,24 @@ describe('change user email', () => {
 
                 const actualUser = await db.getUser(user.id);
                 actualUser.email.should.eq(newEmail);
+
+            });
+
+            it('type should be updated', async () => {
+
+                const username = 'john.doe';
+                const actualCompanyDomainName = COMPANY_DOMAIN_NAME;
+                const actualEmail = username + '@' + actualCompanyDomainName;
+                const user = {id: 0, email: actualEmail, type: userType.Employee, isEmailConfirmed: true};
+                await db.addUser(user);
+                const newCompanyDomainName = 'that-corp.com';
+                const newEmail = username + '@' + newCompanyDomainName;
+                const emailUpdate = {id: user.id, newEmail};
+
+                await changeUserEmail(emailUpdate);
+
+                const actualUser = await db.getUser(user.id);
+                actualUser.type.should.eq(userType.Customer);
 
             });
 
