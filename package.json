@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "compile-db-code": "psql -U postgres -d refactoring_test -h localhost -p 8432 -f src/procedural-db/change-user-email.sql",
-    "test": "mocha --exit test/**/*.test.js",
+    "test": "npm run test:procedural-js && npm run test:procedural-db",
     "test:procedural-js": "SUT=PROCEDURAL_JS mocha --exit test/characterization/change-user-email.test.js",
     "test:procedural-db": "npm run compile-db-code && SUT=PROCEDURAL_DB mocha --exit test/characterization/change-user-email.test.js"
   },
