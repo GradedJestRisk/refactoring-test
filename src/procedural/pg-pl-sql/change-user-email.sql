@@ -119,8 +119,8 @@ BEGIN
 
     END IF;
 
-    -- Propagate changes
-    message_json := '{ type: ''emailChangedEvent'', userId: ''' || p_id || ''', email: ''' || p_new_email || ''' }';
+    -- Propagate changes (deactivated by default, as most PostgreSQL setup do not include http extension)
+/*    message_json := '{ type: ''emailChangedEvent'', userId: ''' || p_id || ''', email: ''' || p_new_email || ''' }';
 
     SELECT status,
            content::json ->> 'data' AS data
@@ -135,7 +135,7 @@ BEGIN
 
     IF response_code != 200 THEN
         RETURN MESSAGE_REJECTED;
-    END IF;
+    END IF;*/
 
     RETURN EXECUTION_SUCCESSFUL;
 END;
