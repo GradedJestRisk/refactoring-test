@@ -1,5 +1,7 @@
 # refactoring-test
 
+To install, skip and go [there](#Install)
+
 # Introduction
 This code* has been ported from a copyrighted C# version, included in the [Unit Testing Principles, Practices, and Patterns](https://www.manning.com/books/unit-testing) book, published by Manning. The author, Vladimir Khorikov, has explicitly allowed such use here. Otherwise stated, all information and quotes in this file comes from the book. I'm not linked in any way with the author; I would like to experiment its proposals and share them with you.
 
@@ -74,3 +76,39 @@ It will follow these steps:
 * write test for OOP hexagonal with best practice from book
 * write test for OOP hexagonal with anti-patterns (eg. unit-testing everything, using mocks)
 * compare costs and benefits of each solutions
+
+
+# Install
+You'll need:
+* node and npm 
+* a running posgresql instance (for full experience, add [http extension](https://github.com/pramsey/pgsql-http))
+
+**Steps**:
+* get the source:
+  * clone the repo : <code>git clone git@github.com:GradedJestRisk/refactoring-test.git && cd refactoring-test</code>
+  * or download the source code manually, extract and cd 
+* install dependencies <code>npm install</code>
+* setup your database connection in [knexfile.js](../knexfile.js)
+```
+    connection: {
+      database: '<DATABASE_NAME>',
+      port:     <PORT>,
+      user:     '<USER',
+      password: '<PASSWORD>' 
+    },
+```
+* run the test <code>npm test</code>
+
+**For development purpose**:
+
+To run characterization tests in interactive mode for one implementation, alter the following line in [change-user-email.test.js](../test/characterization/change-user-email.test.js)
+```
+} else {
+    // used for interactive
+    sutPath = sutPathProceduralJS;
+}
+```
+To see all SQL queries issued by JS, enable debug mode by uncommenting the following line in [knexfile.js](../knexfile.js)
+```
+  // debug: true
+```
