@@ -81,7 +81,7 @@ It will follow these steps:
 # Install
 You'll need:
 * node and npm 
-* a running posgresql instance (for full experience, add [http extension](https://github.com/pramsey/pgsql-http))
+* a running posgresql instance, with  (for full experience, add [http extension](https://github.com/pramsey/pgsql-http))
 
 **Steps**:
 * get the source:
@@ -97,9 +97,33 @@ You'll need:
       password: '<PASSWORD>' 
     },
 ```
+* create DB structure (2 tables): run `npx knex migrate:latest`
 * run the test <code>npm test</code>
 
-**For development purpose**:
+If you installed the http extension, uncomment [the following lines](../master/src/procedural/pg-pl-sql/change-user-email.sql#L122-L138)
+```
+    -- Propagate changes
+    message_json := '{ type: ''emailChangedEvent'', userId: ''' || p_id || ''', email: ''' || p_new_email || ''' }';
+
+    SELECT status,
+           content::json ->> 'data' AS data
+    INTO
+        response_code,
+        response_data
+    FROM
+        http_put('http://httpbin.org/put', message_json, 'text/plain');
+
+    RAISE NOTICE 'response code: %', response_code;
+    RAISE NOTICE 'response data: %', response_data;
+
+    IF response_code != 200 THEN
+        RETURN MESSAGE_REJECTED;
+    END IF;
+```
+
+**For development purpose**
+
+To make manual code execution easier, seeding will create sample data, run `npx knex seed:run`
 
 To run characterization tests in interactive mode for one implementation, alter the following line in [change-user-email.test.js](../master/test/characterization/change-user-email.test.js)
 ```
