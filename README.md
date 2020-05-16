@@ -124,16 +124,21 @@ If you installed the http extension, uncomment [the following lines](../master/s
 
 **For development purpose**
 
-To make manual code execution easier, seeding will create sample data, run `npx knex seed:run`
+To execute code manually:
+* create sample data with seeding, run `npx knex seed:run`
+* choose your implementation by modifying `const sutPath = <IMPLEMENTATION> ` in [server.js](../master/server.js#L6)
+* run `npm start`
 
-To run characterization tests in interactive mode for one implementation, alter the following line in [change-user-email.test.js](../master/test/characterization/change-user-email.test.js)
+To run characterization tests interactively in you IDE on an implementation:
+* alter the following line in [change-user-email.test.js](../master/test/characterization/change-user-email.test.js)
 ```
 } else {
     // used for interactive
     sutPath = sutPathProceduralJS;
 }
 ```
-To see all SQL queries issued by JS, enable debug mode by uncommenting the following line in [knexfile.js](../master/knexfile.js)
+To see all SQL queries issued by JS:
+* enable debug mode by uncommenting the following line in [knexfile.js](../master/knexfile.js)
 ```
   // debug: true
 ```

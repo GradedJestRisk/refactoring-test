@@ -2,14 +2,17 @@ let sutPath;
 
 const sutPathProceduralDB = '../../src/procedural/pg-pl-sql/change-user-email.js';
 const sutPathProceduralJS = '../../src/procedural/javascript/change-user-email.js';
+const sutPathOOPHexagonalEventJS = '../../src/object-oriented/hexagonal-event/code/application/user-controller.js';
 
 if (process.env.SUT === 'PROCEDURAL_JS') {
     sutPath = sutPathProceduralJS;
 } else if (process.env.SUT === 'PROCEDURAL_DB') {
     sutPath = sutPathProceduralDB;
+} else if (process.env.SUT === 'OOP_HEXAGONAL-EVENT_JS') {
+    sutPath = sutPathOOPHexagonalEventJS;
 } else {
     // used for interactive
-    sutPath = sutPathProceduralJS;
+    sutPath = sutPathOOPHexagonalEventJS;
 }
 
 // console.log('SUT is' + sutPath);
@@ -214,8 +217,18 @@ describe('change user email', () => {
             const newEmail = 'employee-one@mycorp.com';
             const emailUpdate = {id: 1, newEmail};
 
-            const rejectionMessage = "Cannot read property 'email' of undefined";
+            let rejectionMessage;
+
+            if (sutPath === sutPathProceduralJS) {
+                rejectionMessage = "Cannot read property 'email' of undefined";
+            } else if (sutPath === sutPathProceduralDB) {
+                rejectionMessage = "Cannot read property 'email' of undefined";
+            } else if (sutPath === sutPathOOPHexagonalEventJS) {
+                rejectionMessage = "Cannot destructure property 'id' of 'undefined' as it is undefined.";
+            }
+
             await expect(changeUserEmail(emailUpdate)).to.be.rejectedWith(rejectionMessage);
+
         });
     });
 

@@ -9,9 +9,11 @@ const addUser = async function (user) {
 };
 
 const addUsers = async function (users) {
-    await Promise.all(users.map(async (user) => {
-        await addUser(user);
-    }));
+    await Promise.all(
+        users.map(async (user) => {
+            await addUser(user);
+        })
+    );
 };
 
 const getUser = async function (id) {
@@ -32,4 +34,4 @@ const getCompanyEmployeeCount = async function () {
     return data.numberOfEmployees;
 };
 
-module.exports = {removeAllUsers, addUser, addUsers, getUser, removeCompany, addCompany, getCompanyEmployeeCount, }
+module.exports = {removeAllUsers, addUser, addUsers, getUser, removeCompany, addCompany, getCompanyEmployeeCount,}
