@@ -88,7 +88,7 @@ You'll need:
   * clone the repo : <code>git clone git@github.com:GradedJestRisk/refactoring-test.git && cd refactoring-test</code>
   * or download the source code manually, extract and cd 
 * install dependencies <code>npm install</code>
-* setup your database connection in [knexfile.js](../knexfile.js)
+* setup your database connection in [knexfile.js](../master/knexfile.js)
 ```
     connection: {
       database: '<DATABASE_NAME>',
@@ -101,14 +101,14 @@ You'll need:
 
 **For development purpose**:
 
-To run characterization tests in interactive mode for one implementation, alter the following line in [change-user-email.test.js](../test/characterization/change-user-email.test.js)
+To run characterization tests in interactive mode for one implementation, alter the following line in [change-user-email.test.js](../master/test/characterization/change-user-email.test.js)
 ```
 } else {
     // used for interactive
     sutPath = sutPathProceduralJS;
 }
 ```
-To see all SQL queries issued by JS, enable debug mode by uncommenting the following line in [knexfile.js](../knexfile.js)
+To see all SQL queries issued by JS, enable debug mode by uncommenting the following line in [knexfile.js](../master/knexfile.js)
 ```
   // debug: true
 ```
