@@ -73,7 +73,7 @@ It will follow these steps:
 * port procedural C# codebase from book to a [procedural JS](https://github.com/GradedJestRisk/refactoring-test/tree/master/src/procedural/javascript)
 * write [characterization test](https://github.com/GradedJestRisk/refactoring-test/tree/master/test/characterization)
 * write [pg-pl-sql port](https://github.com/GradedJestRisk/refactoring-test/tree/master/src/procedural/pg-pl-sql), using characterization test 
-* port OOP hexagonal C# codebase from book to JS OOP hexagonal
+* port OOP hexagonal C# codebase from book to [JS OOP hexagonal](https://github.com/GradedJestRisk/refactoring-test/tree/master/src/object-oriented/hexagonal-event/code/)
 * write test for OOP hexagonal with best practice from book
 * write test for OOP hexagonal with anti-patterns (eg. unit-testing everything, using mocks)
 * compare costs and benefits of each solutions
