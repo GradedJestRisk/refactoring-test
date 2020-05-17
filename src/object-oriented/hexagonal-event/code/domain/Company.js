@@ -9,7 +9,17 @@ class Company {
         this.numberOfEmployees += delta;
     }
 
-    IsEmailCorporate(email) {
+    hire() {
+        //Precondition.Requires(NumberOfEmployees + delta >= 0);
+        this.numberOfEmployees++;
+    }
+
+    fire() {
+        //Precondition.Requires(NumberOfEmployees + delta >= 0);
+        this.numberOfEmployees--;
+    }
+
+    isEmailCorporate(email) {
         const emailDomain = email.split('@')[1];
         return emailDomain === this.domainName;
     }

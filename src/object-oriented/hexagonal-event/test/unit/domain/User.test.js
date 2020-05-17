@@ -1,6 +1,6 @@
 const User = require('../../../code/domain/User');
 const Company = require('../../../code/domain/Company');
-const EmailChangedEvent = require('../../../code/domain/EmailChangedEvent');
+const EmailChangedEvent = require('../../../code/shared/EmailChangedEvent');
 
 const chai = require('chai');
 chai.should();

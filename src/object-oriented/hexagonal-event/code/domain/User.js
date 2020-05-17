@@ -1,4 +1,4 @@
-﻿const EmailChangedEvent = require('./EmailChangedEvent');
+﻿const EmailChangedEvent = require('../shared/EmailChangedEvent');
 const userType = {
     Customer: 1,
     Employee: 2
@@ -26,17 +26,20 @@ class User {
         if (this.email === newEmail)
             return;
 
-        const newType = company.IsEmailCorporate(newEmail)
+        const newType = company.isEmailCorporate(newEmail)
             ? userType.Employee
             : userType.Customer;
 
         if (this.type !== newType) {
-            const delta = newType === userType.Employee ? 1 : -1;
-            company.changeNumberOfEmployees(delta);
+            if (this.type === userType.Customer) {
+                company.hire();
+            } else if (this.type === userType.Employee) {
+                company.fire();
+            }
+            this.type = newType;
         }
 
         this.email = newEmail;
-        this.type = newType;
         this.emailChangedEvents.push(new EmailChangedEvent({userId: this.id, newEmail}));
     }
 }
