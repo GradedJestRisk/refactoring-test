@@ -5,10 +5,11 @@
   "main": "server.js",
   "scripts": {
     "compile-db-code": "psql -U postgres -d refactoring_test -h localhost -p 8432 -f src/procedural/pg-pl-sql/change-user-email.sql",
-    "test": "npm run test:procedural-js && npm run test:procedural-db && npm run test:oop-hexagonal-event-js",
+    "test": "npm run test:procedural-js && npm run test:procedural-db && npm run test:oop-hexagonal-event-js:char &&  npm run test:oop-hexagonal-event-js:unit",
     "test:procedural-js": "SUT=PROCEDURAL_JS mocha --exit test/characterization/change-user-email.test.js",
     "test:procedural-db": "npm run compile-db-code && SUT=PROCEDURAL_DB mocha --exit test/characterization/change-user-email.test.js",
-    "test:oop-hexagonal-event-js": "SUT=OOP_HEXAGONAL-EVENT_JS mocha --exit test/characterization/change-user-email.test.js",
+    "test:oop-hexagonal-event-js:char": "SUT=OOP_HEXAGONAL-EVENT_JS mocha --exit test/characterization/change-user-email.test.js",
+    "test:oop-hexagonal-event-js:unit": "mocha --exit src/object-oriented/hexagonal-event/test/unit/**/*.test.js",
     "show-verbosity": "node src/show-verbosity.js"
   },
   "husky": {
