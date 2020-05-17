@@ -4,6 +4,7 @@ const files = [
     '/procedural/pg-pl-sql/change-user-email.js',
     '/procedural/javascript/change-user-email.js',
     '/object-oriented/hexagonal-event/code/application/user-controller.js',
+    '/object-oriented/hexagonal-event/test/unit/domain/User.test.js',
     '/../test/characterization/change-user-email.test.js',
     '/../test/characterization/database-helper.js'
 ];

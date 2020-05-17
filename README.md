@@ -147,16 +147,21 @@ To see all SQL queries issued by JS:
 # Compare implementations
 
 ## An overview
-| Implementation     | Code size <br> (chars)  | Unit test size <br> (chars) | Integration test size <br> (chars) | Char. test <br> execution time   | Code <br> execution time |
-|--------------------|---------------|----------|-------|---------|---------|
-| Procedural DB      | 650           | N/A      |       | 0,1 s   |  1 ms   |
-| Procedural JS      | 1 427         | N/A      |       | 1 s     |  ?      |
-| OOP Hexagonal JS   | 1 756         | ?        |       | 1 s     |  ?      |
 
-| Helper            | Code (chars)  |
-|-------------------|---------------|
-| Char test         | 9 000         |
-| Char test helper  | 1 000         |
+Units:
+* time: milliseconds
+* size: characters
+
+| Implementation     | Code <br> size   | Code <br> execution time | Unit test <br> size  | Unit test <br>  execution time | Integration test <br> size | Char. test <br> execution time   |
+|--------------------|---------------|----------|----------|-------|---------|---------|
+| Procedural DB      | 650           | 1        | N/A      | N/A   | N/A     | 100     |  
+| Procedural JS      | 1 427         | ?        |  N/A     | N/A   | N/A     | 1000    |  
+| OOP Hexagonal JS   | 1 756         | ?        | 2 500    | 5     | ?       | 1000    |     
+
+| Helper            | Code     |
+|-------------------|----------|
+| Char test         | 9 000    |
+| Char test helper  | 1 000    |
 
 ## Details
 To get:
