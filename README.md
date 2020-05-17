@@ -166,3 +166,5 @@ Units:
 ## Details
 To get:
 * size (chars), run <code>npm run show:verbosity</code>
+* execution time
+    * procedural pl/sql, execute function <code>SELECT get_execution_time_micro();</code>
