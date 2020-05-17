@@ -36,9 +36,6 @@ BEGIN
     --  - create a function that checks if an email is part of the company
     --  - make all changes (email + type) to user in a single SQL statement, using previous function
 
-    RAISE NOTICE 'p_id : %', p_id;
-    RAISE NOTICE 'p_email: %', p_new_email;
-
     -- Does user exists ?
     SELECT COUNT(1)
     INTO user_count
@@ -65,38 +62,27 @@ BEGIN
     WHERE "user"."id" = p_id;
 
     -- Does user type changed ?
-    arobase_position_in_email = position('@' IN p_new_email);
-    email_domain_length = char_length(p_new_email) - arobase_position_in_email;
-
-    RAISE NOTICE 'arobase_position_in_email : %', arobase_position_in_email;
-    RAISE NOTICE 'email_domain_length : %', email_domain_length;
-
-    new_email_domain = substring(p_new_email from (arobase_position_in_email + 1) for email_domain_length);
-    RAISE NOTICE 'email_domain : %', new_email_domain;
+    arobase_position_in_email := position('@' IN p_new_email);
+    email_domain_length := char_length(p_new_email) - arobase_position_in_email;
+    new_email_domain := substring(p_new_email from (arobase_position_in_email + 1) for email_domain_length);
 
     SELECT "domainName"
     INTO company_domain_name
     FROM company;
-
-    RAISE NOTICE 'company_domain_name : %', company_domain_name;
 
     IF new_email_domain = company_domain_name THEN
         new_user_type = EMPLOYEE_TYPE;
     ELSE
         new_user_type = CUSTOMER_TYPE;
     END IF;
-    RAISE NOTICE 'new user type: %s', new_user_type;
 
     SELECT type
     INTO actual_user_type
     FROM "user" usr
     WHERE usr.id = p_id;
 
-    RAISE NOTICE 'actual user type: %s', actual_user_type;
-
     -- If so, update company employee count
     IF (actual_user_type = CUSTOMER_TYPE AND new_user_type = EMPLOYEE_TYPE) THEN
-        RAISE NOTICE 'Changed from customer to employee';
 
         UPDATE "user"
         SET type = EMPLOYEE_TYPE
@@ -108,7 +94,6 @@ BEGIN
     END IF;
 
     IF (actual_user_type = EMPLOYEE_TYPE AND new_user_type = CUSTOMER_TYPE) THEN
-        RAISE NOTICE 'Changed from employee to customer';
 
         UPDATE "user"
         SET type = CUSTOMER_TYPE
