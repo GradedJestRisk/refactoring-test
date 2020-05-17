@@ -101,6 +101,7 @@ You'll need:
 * create DB structure (2 tables): run `npx knex migrate:latest`
 * run the test <code>npm test</code>
 
+
 If you installed the http extension, uncomment [the following lines](../master/src/procedural/pg-pl-sql/change-user-email.sql#L122-L138)
 ```
     -- Propagate changes
@@ -142,3 +143,21 @@ To see all SQL queries issued by JS:
 ```
   // debug: true
 ```
+
+# Compare implementations
+
+## An overview
+| Implementation     | Code (chars)  | Test (chars)            | Char. Test execution time   |
+|--------------------|---------------|-------------------------|-----------------------|
+| Procedural DB      | 650           | +                       | 0,1 s                 |
+| Procedural JS      | 1 427         | +                       | 1 s                   |
+| OOP Hexagonal JS   | 1 756         | +                       | 1 s                   |
+
+| Helper            | Code (chars)  | Execution time |
+|-------------------|---------------|----------------|
+| Char test         | 9 000         |                |
+| Char test helper  | 1 000         |                |
+
+## Details
+To get:
+* size (chars), run <code>npm run show:verbosity</code>

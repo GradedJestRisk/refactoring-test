@@ -8,7 +8,8 @@
     "test": "npm run test:procedural-js && npm run test:procedural-db && npm run test:oop-hexagonal-event-js",
     "test:procedural-js": "SUT=PROCEDURAL_JS mocha --exit test/characterization/change-user-email.test.js",
     "test:procedural-db": "npm run compile-db-code && SUT=PROCEDURAL_DB mocha --exit test/characterization/change-user-email.test.js",
-    "test:oop-hexagonal-event-js": "SUT=OOP_HEXAGONAL-EVENT_JS mocha --exit test/characterization/change-user-email.test.js"
+    "test:oop-hexagonal-event-js": "SUT=OOP_HEXAGONAL-EVENT_JS mocha --exit test/characterization/change-user-email.test.js",
+    "show-verbosity": "node src/show-verbosity.js"
   },
   "husky": {
     "hooks": {
@@ -19,7 +20,16 @@
     "type": "git",
     "url": "git+https://github.com/GradedJestRisk/refactoring-test.git"
   },
-  "keywords": [ "kata", "refactoring","test", "unit test", "integration test", "hexagonal architecture", "javascript", "pg pl sql"],
+  "keywords": [
+    "kata",
+    "refactoring",
+    "test",
+    "unit test",
+    "integration test",
+    "hexagonal architecture",
+    "javascript",
+    "pg pl sql"
+  ],
   "author": "https://github.com/GradedJestRisk",
   "license": "ISC",
   "bugs": {
@@ -35,6 +45,7 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "husky": "^4.2.5",
+    "letter-count": "^2.8.9",
     "mocha": "^7.1.2",
     "nock": "^12.0.3"
   }
