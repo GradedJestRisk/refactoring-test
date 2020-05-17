@@ -1,6 +1,18 @@
-# refactoring-test
-
-To install, skip and go [there](#Install)
+# Table of contents
+- [Introduction](#introduction)
+- [Scope](#scope)
+- [Book theses overview](#book-theses-overview)
+  * [Hypothesis](#hypothesis)
+  * [Conclusion](#conclusion)
+  * [Target testing strategy](#target-testing-strategy)
+- [Implementation](#implementation)
+- [Repository building](#repository-building)
+- [Install](#install)
+  * [Steps](#steps)
+  * [Development purpose](#development-purpose)
+- [Compare implementations](#compare-implementations)
+  * [An overview](#an-overview)
+  * [Details](#details)
 
 # Introduction
 This code* has been ported from a copyrighted C# version, included in the [Unit Testing Principles, Practices, and Patterns](https://www.manning.com/books/unit-testing) book, published by Manning. The author, Vladimir Khorikov, has explicitly allowed such use here. Otherwise stated, all information and quotes in this file comes from the book. I'm not linked in any way with the author; I would like to experiment its proposals and share them with you.
@@ -19,7 +31,7 @@ Only entreprise applications are in the scope.
 
 Only back-office API are in the scope (GUI are off-scope).
 
-# Book's theses overview
+# Book theses overview
 
 ## Hypothesis
 List:
@@ -38,7 +50,7 @@ Coding is a tradeoff
 | Some indirection | +                   | -                       | -                     |
 
 
-## Target testing'strategy:
+## Target testing strategy
 Test types:
 * unit test 
    * scope :
@@ -83,7 +95,7 @@ You'll need:
 * node and npm 
 * a running posgresql instance, with  (for full experience, add [http extension](https://github.com/pramsey/pgsql-http))
 
-**Steps**:
+## Steps 
 * get the source:
   * clone the repo : <code>git clone git@github.com:GradedJestRisk/refactoring-test.git && cd refactoring-test</code>
   * or download the source code manually, extract and cd 
@@ -122,7 +134,7 @@ If you installed the http extension, uncomment [the following lines](../master/s
     END IF;
 ```
 
-**For development purpose**
+## Development purpose
 
 To execute code manually:
 * create sample data with seeding, run `npx knex seed:run`
