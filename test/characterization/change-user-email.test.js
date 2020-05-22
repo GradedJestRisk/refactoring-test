@@ -12,7 +12,7 @@ if (process.env.SUT === 'PROCEDURAL_JS') {
     sutPath = sutPathOOPHexagonalEventJS;
 } else {
     // used for interactive
-    sutPath = sutPathOOPHexagonalEventJS;
+    sutPath = sutPathProceduralDB;
 }
 
 // console.log('SUT is' + sutPath);
@@ -107,10 +107,10 @@ describe('change user email', () => {
 
             describe(' employee count must stay up-to-date', () => {
 
-                beforeEach(() => {
-                    db.removeAllUsers();
-                    db.removeCompany();
-                    db.addCompany();
+                beforeEach(async () => {
+                    await db.removeAllUsers();
+                    await db.removeCompany();
+                    await db.addCompany();
                 });
 
                 it('if email domain stay the same, employee count should stay the same', async () => {
@@ -154,6 +154,7 @@ describe('change user email', () => {
 
                 it('if email is changed from corporate to not corporate, employee count should be decremented', async () => {
 
+                    await db.removeCompany();
                     const user = {
                         id: 0,
                         email: 'user_one@this-corp.com',
@@ -161,13 +162,18 @@ describe('change user email', () => {
                         isEmailConfirmed: true
                     };
                     await db.addUser(user);
+
+                    await db.addCompany(1);
+
                     const employeeCount = await db.getCompanyEmployeeCount();
+                    console.log('employeeCount: ' + employeeCount );
                     const newEmail = 'user_one@that-corp.com';
                     const emailUpdate = {id: user.id, newEmail};
 
                     await changeUserEmail(emailUpdate);
 
                     const actualEmployeeCount = await db.getCompanyEmployeeCount();
+                    console.log('actualEmployeeCount: ' + actualEmployeeCount );
                     actualEmployeeCount.should.eq(employeeCount - 1);
 
                 });
