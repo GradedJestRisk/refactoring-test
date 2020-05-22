@@ -1,13 +1,17 @@
-DROP FUNCTION IF EXISTS public.is_employee;
-CREATE OR REPLACE FUNCTION public.is_employee( p_email TEXT)
-    RETURNS BOOLEAN
+DROP FUNCTION IF EXISTS public.user_type_from_email;
+CREATE OR REPLACE FUNCTION public.user_type_from_email( p_email TEXT)
+    RETURNS INTEGER
     LANGUAGE 'plpgsql'
 AS
 $BODY$
 DECLARE
 
+    -- Magic values
+    CUSTOMER_LABEL       CONSTANT TEXT = 'customer';
+    EMPLOYEE_LABEL       CONSTANT TEXT = 'employee';
+
     -- Variables
-    is_from_company    BOOLEAN;
+    user_type_id    INTEGER;
 
     arobase_position_in_email     INTEGER;
     email_domain_length           INTEGER;
@@ -25,12 +29,12 @@ BEGIN
     FROM company;
 
     IF new_email_domain = company_domain_name THEN
-        is_from_company = TRUE;
+        SELECT id INTO user_type_id FROM user_type WHERE label = EMPLOYEE_LABEL;
     ELSE
-        is_from_company = FALSE;
+        SELECT id INTO user_type_id FROM user_type WHERE label = CUSTOMER_LABEL;
     END IF;
 
-    RETURN is_from_company;
+    RETURN user_type_id;
 
-END;
+END
 $BODY$;

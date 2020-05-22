@@ -23,10 +23,6 @@ DECLARE
     EMAIL_ALREADY_TAKEN  CONSTANT TEXT    := 'Email is taken';
     MESSAGE_REJECTED     CONSTANT TEXT    := 'Message has been rejected by http://httpbin.org/put';
 
-    -- Magic values
-    CUSTOMER_TYPE        CONSTANT INTEGER = 1;
-    EMPLOYEE_TYPE        CONSTANT INTEGER = 2;
-
 BEGIN
 
     -- Does user exists ?
@@ -55,14 +51,9 @@ BEGIN
     WHERE "user"."id" = p_id;
 
     -- Update user type
-    IF is_employee(p_email := p_new_email) THEN
-        new_user_type = EMPLOYEE_TYPE;
-    ELSE
-        new_user_type = CUSTOMER_TYPE;
-    END IF;
-
     UPDATE "user"
-    SET type = new_user_type
+    SET
+        type = user_type_from_email( p_email := p_new_email)
     WHERE "user"."id" = p_id;
 
     -- Update employee count
