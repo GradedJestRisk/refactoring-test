@@ -12,7 +12,7 @@ if (process.env.SUT === 'PROCEDURAL_JS') {
     sutPath = sutPathOOPHexagonalEventJS;
 } else {
     // used for interactive
-    sutPath = sutPathProceduralDB;
+    sutPath = sutPathProceduralJS;
 }
 
 // console.log('SUT is' + sutPath);
@@ -32,7 +32,6 @@ const COMPANY_DOMAIN_NAME = 'this-corp.com';
 
 describe('change user email', () => {
 
-
     describe('when user exists', () => {
 
         beforeEach(async () => {
@@ -45,9 +44,15 @@ describe('change user email', () => {
 
         describe('and email is not taken', () => {
 
+            beforeEach(async () => {
+                await db.removeAllUsers();
+                await db.removeCompany();
+            });
+
             it('email should be updated', async () => {
 
-                const user = {id: 0, email: 'employee_one@this-corp.com', type: 2, isEmailConfirmed: true};
+                await db.addCompany(1);
+                const user = {id: 0, email: 'employee_one@this-corp.com', type: userType.Employee, isEmailConfirmed: true};
                 const newEmail = 'employee-one@mycorp.com';
                 await db.addUser(user);
 
@@ -60,6 +65,8 @@ describe('change user email', () => {
             });
 
             it('type should be updated', async () => {
+
+                await db.addCompany(1);
 
                 const username = 'john.doe';
                 const actualCompanyDomainName = COMPANY_DOMAIN_NAME;
@@ -88,6 +95,8 @@ describe('change user email', () => {
                     .put(route)
                     .reply(OK_RESPONSE_STATUS, {});
 
+
+                await db.addCompany(1);
                 const user = {id: 0, email: 'employee_one@this-corp.com', type: 2, isEmailConfirmed: true};
                 const newEmail = 'employee-one@mycorp.com';
                 await db.addUser(user);
@@ -110,11 +119,12 @@ describe('change user email', () => {
                 beforeEach(async () => {
                     await db.removeAllUsers();
                     await db.removeCompany();
-                    await db.addCompany();
                 });
 
                 it('if email domain stay the same, employee count should stay the same', async () => {
 
+                    const employeeCount = 0;
+                    await db.addCompany(employeeCount);
                     const user = {
                         id: 0,
                         email: 'user_one@this-corp.com',
@@ -123,17 +133,18 @@ describe('change user email', () => {
                     };
                     await db.addUser(user);
                     const newEmail = 'user-one@mthis-corp.com';
-                    const employeeCount = await db.getCompanyEmployeeCount();
 
                     const emailUpdate = {id: user.id, newEmail};
                     await changeUserEmail(emailUpdate);
 
                     const actualEmployeeCount = await db.getCompanyEmployeeCount();
-                    actualEmployeeCount.should.eq(employeeCount);
+                    actualEmployeeCount.should.eq(0);
                 });
 
                 it('if email is changed from not corporate to corporate, employee count should be incremented ', async () => {
 
+                    const employeeCount = 0;
+                    await db.addCompany(employeeCount);
                     const user = {
                         id: 0,
                         email: 'user_one@that-corp.com',
@@ -142,37 +153,33 @@ describe('change user email', () => {
                     };
                     await db.addUser(user);
                     const newEmail = 'user_one@this-corp.com';
-                    const employeeCount = await db.getCompanyEmployeeCount();
-
                     const emailUpdate = {id: user.id, newEmail};
+
                     await changeUserEmail(emailUpdate);
 
                     const actualEmployeeCount = await db.getCompanyEmployeeCount();
-                    actualEmployeeCount.should.eq(employeeCount + 1);
+                    actualEmployeeCount.should.eq(1);
 
                 });
 
                 it('if email is changed from corporate to not corporate, employee count should be decremented', async () => {
 
-                    await db.removeCompany();
-                    const user = {
+                    const employeeCount = 1;
+                    await db.addCompany(employeeCount);
+                     const user = {
                         id: 0,
                         email: 'user_one@this-corp.com',
                         type: userType.Employee,
                         isEmailConfirmed: true
                     };
                     await db.addUser(user);
-
-                    await db.addCompany(1);
-
-                    const employeeCount = await db.getCompanyEmployeeCount();
                     const newEmail = 'user_one@that-corp.com';
                     const emailUpdate = {id: user.id, newEmail};
 
                     await changeUserEmail(emailUpdate);
 
                     const actualEmployeeCount = await db.getCompanyEmployeeCount();
-                    actualEmployeeCount.should.eq(employeeCount - 1);
+                    actualEmployeeCount.should.eq(0);
 
                 });
 
