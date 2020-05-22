@@ -19,7 +19,7 @@ DECLARE
     company_domain_name           TEXT;
 
 BEGIN
-    -- Does user type changed ?
+
     arobase_position_in_email := position('@' IN p_email);
     email_domain_length := char_length(p_email) - arobase_position_in_email;
     new_email_domain := substring(p_email from (arobase_position_in_email + 1) for email_domain_length);

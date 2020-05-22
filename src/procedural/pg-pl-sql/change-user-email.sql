@@ -26,7 +26,7 @@ DECLARE
 
 BEGIN
 
-    -- Does user exists ?
+    -- Check if user exists
     SELECT COUNT(1)
     INTO user_count
     FROM "user" usr
@@ -36,7 +36,7 @@ BEGIN
         RETURN USER_NOT_FOUND;
     END IF;
 
-    -- Is email already taken ?
+    -- Check if email is not taken yet
     SELECT COUNT(1)
     INTO user_count
     FROM "user" usr
@@ -88,5 +88,5 @@ BEGIN
     END IF;*/
 
     RETURN EXECUTION_SUCCESSFUL;
-END;
+END
 $BODY$;
