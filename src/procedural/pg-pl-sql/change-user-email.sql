@@ -9,8 +9,6 @@ DECLARE
 
     -- Variables --
     user_count                    INTEGER := 0;
-    new_user_type                 INTEGER;
-    actual_user_type              INTEGER;
     message_json                  TEXT;
     response_code                 INTEGER;
     response_data                 TEXT;
