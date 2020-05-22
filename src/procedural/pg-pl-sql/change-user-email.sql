@@ -32,7 +32,6 @@ BEGIN
 
     -- TODO (refacto)
     --  - add database constraint to avoid employeeCount to be negative
-    --  - update employeeCount using user table, not current change
     --  - make all changes (email + type) to user in a single SQL statement, using previous function
 
     -- Does user exists ?
@@ -72,15 +71,12 @@ BEGIN
     FROM "user" usr
     WHERE usr.id = p_id;
 
-    -- If so, update company employee count
+
     IF (actual_user_type = CUSTOMER_TYPE AND new_user_type = EMPLOYEE_TYPE) THEN
 
         UPDATE "user"
         SET type = EMPLOYEE_TYPE
         WHERE "user"."id" = p_id;
-
-        UPDATE "company"
-        SET "numberOfEmployees" = "numberOfEmployees" + 1;
 
     END IF;
 
@@ -90,10 +86,18 @@ BEGIN
         SET type = CUSTOMER_TYPE
         WHERE "user"."id" = p_id;
 
-        UPDATE "company"
-        SET "numberOfEmployees" = "numberOfEmployees" - 1;
-
     END IF;
+
+   -- Keep company count up-to-date
+    UPDATE "company"
+    SET "numberOfEmployees" = (
+        SELECT
+            COUNT(1)
+        FROM
+            "user" u INNER JOIN user_type ut
+                ON ut.id = u.type
+        WHERE ut.label = 'employee'
+        );
 
     -- Propagate changes (deactivated by default, as most PostgreSQL setup do not include http extension)
 /*    message_json := '{ type: ''emailChangedEvent'', userId: ''' || p_id || ''', email: ''' || p_new_email || ''' }';
