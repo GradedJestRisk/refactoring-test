@@ -7,31 +7,27 @@ AS
 $BODY$
 DECLARE
 
-    -- Variables
+    -- Variables --
     user_count                    INTEGER := 0;
-    delta                         INTEGER := 0;
-    arobase_position_in_email     INTEGER;
-    email_domain_length           INTEGER;
-    new_email_domain              TEXT;
-    company_domain_name           TEXT;
     new_user_type                 INTEGER;
     actual_user_type              INTEGER;
     message_json                  TEXT;
     response_code                 INTEGER;
     response_data                 TEXT;
 
-    -- Constants
+    -- Constants --
+
+    -- Return messages
+    EXECUTION_SUCCESSFUL CONSTANT TEXT    := '';
     USER_NOT_FOUND       CONSTANT TEXT    := 'user not found';
     EMAIL_ALREADY_TAKEN  CONSTANT TEXT    := 'Email is taken';
-    EXECUTION_SUCCESSFUL CONSTANT TEXT    := '';
     MESSAGE_REJECTED     CONSTANT TEXT    := 'Message has been rejected by http://httpbin.org/put';
+
+    -- Magic values
     CUSTOMER_TYPE        CONSTANT INTEGER = 1;
     EMPLOYEE_TYPE        CONSTANT INTEGER = 2;
 
 BEGIN
-
-    -- TODO (refacto)
-    --  - make all changes (email + type) to user in a single SQL statement, using previous function
 
     -- Does user exists ?
     SELECT COUNT(1)
@@ -58,36 +54,18 @@ BEGIN
     SET email = p_new_email
     WHERE "user"."id" = p_id;
 
-
-    IF is_from_company(p_email := p_new_email) THEN
+    -- Update user type
+    IF is_employee(p_email := p_new_email) THEN
         new_user_type = EMPLOYEE_TYPE;
     ELSE
         new_user_type = CUSTOMER_TYPE;
     END IF;
 
-    SELECT type
-    INTO actual_user_type
-    FROM "user" usr
-    WHERE usr.id = p_id;
+    UPDATE "user"
+    SET type = new_user_type
+    WHERE "user"."id" = p_id;
 
-
-    IF (actual_user_type = CUSTOMER_TYPE AND new_user_type = EMPLOYEE_TYPE) THEN
-
-        UPDATE "user"
-        SET type = EMPLOYEE_TYPE
-        WHERE "user"."id" = p_id;
-
-    END IF;
-
-    IF (actual_user_type = EMPLOYEE_TYPE AND new_user_type = CUSTOMER_TYPE) THEN
-
-        UPDATE "user"
-        SET type = CUSTOMER_TYPE
-        WHERE "user"."id" = p_id;
-
-    END IF;
-
-   -- Keep company count up-to-date
+    -- Update employee count
     UPDATE "company"
     SET "numberOfEmployees" = (
         SELECT
@@ -96,7 +74,7 @@ BEGIN
             "user" u INNER JOIN user_type ut
                 ON ut.id = u.type
         WHERE ut.label = 'employee'
-        );
+    );
 
     -- Propagate changes (deactivated by default, as most PostgreSQL setup do not include http extension)
 /*    message_json := '{ type: ''emailChangedEvent'', userId: ''' || p_id || ''', email: ''' || p_new_email || ''' }';

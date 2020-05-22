@@ -1,5 +1,5 @@
-DROP FUNCTION IF EXISTS public.is_from_company;
-CREATE OR REPLACE FUNCTION public.is_from_company( p_email TEXT)
+DROP FUNCTION IF EXISTS public.is_employee;
+CREATE OR REPLACE FUNCTION public.is_employee( p_email TEXT)
     RETURNS BOOLEAN
     LANGUAGE 'plpgsql'
 AS
