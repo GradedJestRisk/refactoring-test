@@ -66,7 +66,8 @@ BEGIN
             "user" u INNER JOIN user_type ut
                 ON ut.id = u.type
         WHERE ut.label = EMPLOYEE_LABEL
-    );
+    )
+    WHERE "domainName" = ( SELECT "domainName" FROM company ORDER BY "domainName" LIMIT 1) ;
 
     -- Propagate changes (deactivated by default, as most PostgreSQL setup do not include http extension)
 /*    message_json := '{ type: ''emailChangedEvent'', userId: ''' || p_id || ''', email: ''' || p_new_email || ''' }';
