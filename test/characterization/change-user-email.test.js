@@ -166,14 +166,12 @@ describe('change user email', () => {
                     await db.addCompany(1);
 
                     const employeeCount = await db.getCompanyEmployeeCount();
-                    console.log('employeeCount: ' + employeeCount );
                     const newEmail = 'user_one@that-corp.com';
                     const emailUpdate = {id: user.id, newEmail};
 
                     await changeUserEmail(emailUpdate);
 
                     const actualEmployeeCount = await db.getCompanyEmployeeCount();
-                    console.log('actualEmployeeCount: ' + actualEmployeeCount );
                     actualEmployeeCount.should.eq(employeeCount - 1);
 
                 });
