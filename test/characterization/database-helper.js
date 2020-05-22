@@ -24,8 +24,8 @@ const removeCompany = async function () {
     await knex('company').del();
 };
 
-const addCompany = async function (user) {
-    const company = {domainName: 'this-corp.com', numberOfEmployees: 0};
+const addCompany = async function (numberOfEmployees = 0) {
+    const company = {domainName: 'this-corp.com', numberOfEmployees};
     await knex('company').insert([company]);
 };
 
