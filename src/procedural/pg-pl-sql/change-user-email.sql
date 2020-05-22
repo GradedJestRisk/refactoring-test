@@ -33,7 +33,6 @@ BEGIN
     -- TODO (refacto)
     --  - add database constraint to avoid employeeCount to be negative
     --  - update employeeCount using user table, not current change
-    --  - create a function that checks if an email is part of the company
     --  - make all changes (email + type) to user in a single SQL statement, using previous function
 
     -- Does user exists ?
@@ -61,16 +60,8 @@ BEGIN
     SET email = p_new_email
     WHERE "user"."id" = p_id;
 
-    -- Does user type changed ?
-    arobase_position_in_email := position('@' IN p_new_email);
-    email_domain_length := char_length(p_new_email) - arobase_position_in_email;
-    new_email_domain := substring(p_new_email from (arobase_position_in_email + 1) for email_domain_length);
 
-    SELECT "domainName"
-    INTO company_domain_name
-    FROM company;
-
-    IF new_email_domain = company_domain_name THEN
+    IF is_from_company(p_email := p_new_email) THEN
         new_user_type = EMPLOYEE_TYPE;
     ELSE
         new_user_type = CUSTOMER_TYPE;
