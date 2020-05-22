@@ -23,6 +23,9 @@ DECLARE
     EMAIL_ALREADY_TAKEN  CONSTANT TEXT    := 'Email is taken';
     MESSAGE_REJECTED     CONSTANT TEXT    := 'Message has been rejected by http://httpbin.org/put';
 
+   -- Magic values
+    EMPLOYEE_LABEL       CONSTANT TEXT = 'employee';
+
 BEGIN
 
     -- Does user exists ?
@@ -64,7 +67,7 @@ BEGIN
         FROM
             "user" u INNER JOIN user_type ut
                 ON ut.id = u.type
-        WHERE ut.label = 'employee'
+        WHERE ut.label = EMPLOYEE_LABEL
     );
 
     -- Propagate changes (deactivated by default, as most PostgreSQL setup do not include http extension)
