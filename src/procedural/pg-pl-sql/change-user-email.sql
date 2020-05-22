@@ -31,7 +31,6 @@ DECLARE
 BEGIN
 
     -- TODO (refacto)
-    --  - add database constraint to avoid employeeCount to be negative
     --  - make all changes (email + type) to user in a single SQL statement, using previous function
 
     -- Does user exists ?
