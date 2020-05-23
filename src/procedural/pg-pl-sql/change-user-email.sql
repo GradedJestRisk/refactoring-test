@@ -31,12 +31,8 @@ BEGIN
         RETURN change_result;
     END IF;
 
-    -- Update user
-    UPDATE "user"
-    SET email = p_new_email,
-        type = user_type_from_email( p_email := p_new_email)
-    WHERE "user"."id" = p_id;
 
+    CALL update_user(p_user_id := p_id, p_email := p_new_email);
 
     -- Update employee count
     UPDATE "company"
