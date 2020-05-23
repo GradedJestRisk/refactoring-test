@@ -8,7 +8,7 @@ $BODY$
 DECLARE
 
     -- Variables --
-    user_count                    INTEGER := 0;
+    change_result                 TEXT;
     message_json                  TEXT;
     response_code                 INTEGER;
     response_data                 TEXT;
@@ -17,33 +17,18 @@ DECLARE
 
     -- Return messages
     EXECUTION_SUCCESSFUL CONSTANT TEXT    := '';
-    USER_NOT_FOUND       CONSTANT TEXT    := 'user not found';
-    EMAIL_ALREADY_TAKEN  CONSTANT TEXT    := 'Email is taken';
     MESSAGE_REJECTED     CONSTANT TEXT    := 'Message has been rejected by http://httpbin.org/put';
 
    -- Magic values
+    CHANGE_AUTHORIZED    CONSTANT TEXT = '';
     EMPLOYEE_LABEL       CONSTANT TEXT = 'employee';
 
 BEGIN
 
-    -- Check if user exists
-    SELECT COUNT(1)
-    INTO user_count
-    FROM "user" usr
-    WHERE usr.id = p_id;
+    SELECT email_change_authorized(  p_user_id := p_id, p_email := p_new_email) INTO change_result;
 
-    IF user_count = 0 THEN
-        RETURN USER_NOT_FOUND;
-    END IF;
-
-    -- Check if email is not taken yet
-    SELECT COUNT(1)
-    INTO user_count
-    FROM "user" usr
-    WHERE usr.email = p_new_email;
-
-    IF user_count > 0 THEN
-        RETURN EMAIL_ALREADY_TAKEN;
+    IF change_result <> CHANGE_AUTHORIZED THEN
+        RETURN change_result;
     END IF;
 
     -- Update user
