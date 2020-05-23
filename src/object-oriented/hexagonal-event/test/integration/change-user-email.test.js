@@ -4,6 +4,7 @@ chai.should();
 const mut = require('../../code/application/user-controller');
 
 // Test helpers
+const MessageBusSpy = require('./MessageBusSpy');
 const db = require('./../../../../../test/characterization/database-helper');
 
 // Test values
@@ -20,6 +21,9 @@ describe('integration | changeUserEmail', () => {
     it('changing email from corporate to non corporate', async () => {
 
         // Arrange
+
+        const messageBusSpy = new MessageBusSpy();
+
         const employeeCount = 1;
         await db.addCompany(employeeCount);
 
@@ -35,13 +39,7 @@ describe('integration | changeUserEmail', () => {
 
         const newCompanyDomainName = 'that-corp.com';
         const newEmail = userName + '@' + newCompanyDomainName;
-        const emailUpdate = {id: user.id, newEmail};
-
-        /*
-        var busSpy = new BusSpy();
-        var messageBus = new MessageBus(busSpy);
-        var loggerMock = new Mock < IDomainLogger > ();
-        */
+        const emailUpdate = {messageBus: messageBusSpy, id: user.id, newEmail};
 
         // Act
         const response = await mut(emailUpdate);
@@ -56,13 +54,7 @@ describe('integration | changeUserEmail', () => {
         const actualEmployeeCount = await db.getCompanyEmployeeCount();
         actualEmployeeCount.should.eq(0);
 
-        /*
-        busSpy.ShouldSendNumberOfMessages(1)
-            .WithEmailChangedMessage(user.UserId, "new@gmail.com");
-        loggerMock.Verify(
-            x => x.UserTypeHasChanged(
-                user.UserId, UserType.Employee, UserType.Customer),
-            Times.Once);
-            */
+        messageBusSpy.shouldSendNumberOfMessages(1).withEmailChangedMessage( { id: user.id, newEmail});
+
     });
 });
