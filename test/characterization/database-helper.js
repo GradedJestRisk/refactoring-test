@@ -34,4 +34,9 @@ const getCompanyEmployeeCount = async function () {
     return data.numberOfEmployees;
 };
 
-module.exports = {removeAllUsers, addUser, addUsers, getUser, removeCompany, addCompany, getCompanyEmployeeCount,}
+const removeAll = async function () {
+    await removeCompany();
+    await removeAllUsers();
+};
+
+module.exports = {removeAllUsers, addUser, addUsers, getUser, removeCompany, addCompany, getCompanyEmployeeCount, removeAll}
