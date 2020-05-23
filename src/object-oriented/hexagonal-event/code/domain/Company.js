@@ -4,11 +4,6 @@ class Company {
         this.numberOfEmployees = numberOfEmployees;
     }
 
-    changeNumberOfEmployees(delta) {
-        //Precondition.Requires(NumberOfEmployees + delta >= 0);
-        this.numberOfEmployees += delta;
-    }
-
     hire() {
         //Precondition.Requires(NumberOfEmployees + delta >= 0);
         this.numberOfEmployees++;
