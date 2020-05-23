@@ -21,7 +21,6 @@ DECLARE
 
    -- Magic values
     CHANGE_AUTHORIZED    CONSTANT TEXT = '';
-    EMPLOYEE_LABEL       CONSTANT TEXT = 'employee';
 
 BEGIN
 
@@ -31,20 +30,9 @@ BEGIN
         RETURN change_result;
     END IF;
 
-
     CALL update_user(p_user_id := p_id, p_email := p_new_email);
 
-    -- Update employee count
-    UPDATE "company"
-    SET "numberOfEmployees" = (
-        SELECT
-            COUNT(1)
-        FROM
-            "user" u INNER JOIN user_type ut
-                ON ut.id = u.type
-        WHERE ut.label = EMPLOYEE_LABEL
-    )
-    WHERE "domainName" = ( SELECT "domainName" FROM company ORDER BY "domainName" LIMIT 1) ;
+    CALL update_company();
 
     -- Propagate changes (deactivated by default, as most PostgreSQL setup do not include http extension)
 /*    message_json := '{ type: ''emailChangedEvent'', userId: ''' || p_id || ''', email: ''' || p_new_email || ''' }';
