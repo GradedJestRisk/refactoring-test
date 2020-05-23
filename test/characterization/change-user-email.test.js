@@ -2,7 +2,7 @@ let sutPath;
 
 const sutPathProceduralDB = '../../src/procedural/pg-pl-sql/change-user-email.js';
 const sutPathProceduralJS = '../../src/procedural/javascript/change-user-email.js';
-const sutPathOOPHexagonalEventJS = '../../src/object-oriented/hexagonal-event/code/application/user-controller.js';
+const sutPathOOPHexagonalEventJS = '../../src/object-oriented/hexagonal-event/code/change-user-email.js';
 
 if (process.env.SUT === 'PROCEDURAL_JS') {
     sutPath = sutPathProceduralJS;
@@ -12,7 +12,7 @@ if (process.env.SUT === 'PROCEDURAL_JS') {
     sutPath = sutPathOOPHexagonalEventJS;
 } else {
     // used for interactive
-    sutPath = sutPathProceduralJS;
+    sutPath = sutPathOOPHexagonalEventJS;
 }
 
 // console.log('SUT is' + sutPath);

@@ -1,12 +1,11 @@
 const userRepository = require('../infrastructure/managed-dependencies/user-repository')
 const companyRepository = require('../infrastructure/managed-dependencies/company-repository')
-const messageBus = require('../infrastructure/unmanaged-dependencies/message-bus')
 const User = require('../domain/User');
 const Company = require('../domain/Company');
 
 const SUCCESSFUL_EXECUTION_MESSAGE = 'OK'
 
-const changeUserEmail = async function ({id, newEmail}) {
+const changeUserEmail = async function ({ messageBus, id, newEmail}) {
 
     // Call repository with canExecute pattern - is this OK ?
     const emailAlreadyTakenMessage = await userRepository.isEmailAlreadyTaken(newEmail);
