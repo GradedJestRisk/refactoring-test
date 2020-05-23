@@ -9,6 +9,7 @@ DECLARE
 
     -- Variables --
     change_result                 TEXT;
+    propagation_result            TEXT;
     message_json                  TEXT;
     response_code                 INTEGER;
     response_data                 TEXT;
@@ -21,6 +22,7 @@ DECLARE
 
    -- Magic values
     CHANGE_AUTHORIZED    CONSTANT TEXT = '';
+    CHANGE_PROPAGATED    CONSTANT TEXT = '';
 
 BEGIN
 
@@ -35,23 +37,15 @@ BEGIN
     CALL update_company();
 
     -- Propagate changes (deactivated by default, as most PostgreSQL setup do not include http extension)
-/*    message_json := '{ type: ''emailChangedEvent'', userId: ''' || p_id || ''', email: ''' || p_new_email || ''' }';
+    /*
+    SELECT propagate_change(  p_user_id := p_id, p_email := p_new_email) INTO propagation_result;
 
-    SELECT status,
-           content::json ->> 'data' AS data
-    INTO
-        response_code,
-        response_data
-    FROM
-        http_put('http://httpbin.org/put', message_json, 'text/plain');
-
-    RAISE NOTICE 'response code: %', response_code;
-    RAISE NOTICE 'response data: %', response_data;
-
-    IF response_code != 200 THEN
-        RETURN MESSAGE_REJECTED;
-    END IF;*/
+    IF propagation_result <> CHANGE_PROPAGATED THEN
+        RETURN propagation_result;
+    END IF;
+    */
 
     RETURN EXECUTION_SUCCESSFUL;
+
 END
 $BODY$;
