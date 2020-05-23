@@ -46,16 +46,12 @@ BEGIN
         RETURN EMAIL_ALREADY_TAKEN;
     END IF;
 
-    -- Update user email
+    -- Update user
     UPDATE "user"
-    SET email = p_new_email
-    WHERE "user"."id" = p_id;
-
-    -- Update user type
-    UPDATE "user"
-    SET
+    SET email = p_new_email,
         type = user_type_from_email( p_email := p_new_email)
     WHERE "user"."id" = p_id;
+
 
     -- Update employee count
     UPDATE "company"
