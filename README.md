@@ -17,32 +17,32 @@
 # Introduction
 This code* has been ported from a copyrighted C# version, included in the [Unit Testing Principles, Practices, and Patterns](https://www.manning.com/books/unit-testing) book, published by Manning. The author, Vladimir Khorikov, has explicitly allowed such use here. Otherwise stated, all information and quotes in this file comes from the book. I'm not linked in any way with the author; I would like to experiment its proposals and share them with you.
 
-*: except PostgreSQL PL/SQL version, that I wrote by myself. Refered to as pg-pl-sql in codebase, it'a procedural (imperative) language, executed by the database. Basically, it allows mixing "functional" SQL statements together using basic imperative structures (control flow, variables, array). The aim of using such an unusual programming language is to show cost/benefits of such a compact implementation.
+*: except PostgreSQL PL/SQL version, that I wrote by myself. Referred to as pg-pl-sql in codebase, it'a procedural (imperative) language, executed by the database. Basically, it allows mixing "functional" SQL statements together using basic imperative structures (control flow, variables, array). The aim of using such an unusual programming language is to show cost/benefits of such a compact implementation.
 
-Regarding hexagonal architecture, folders are named according to  [OCTO blog post](https://blog.octo.com/en/hexagonal-architecture-three-principles-and-an-implementation-example/)
+Regarding hexagonal architecture, folders naming convention come from this [blog post](https://blog.octo.com/en/hexagonal-architecture-three-principles-and-an-implementation-example/)
 
 Characterization testing complies with to [Michael Feathers](https://michaelfeathers.silvrback.com/characterization-testing) definition
 
 # Scope
 Only entreprise applications are in the scope.
 > An entreprise application is an application that aims at automating or assisting an organization's inner
-> processses. It can take many forms, but usually the characteristics of an entreprise software are:
+> processes. It can take many forms, but usually the characteristics of an entreprise software are:
 > - high business logic complexity;
 > - long project lifespan;
 > - moderate amounts of data;
 > - low or moderate performance requirements.
 
-Only back-office API are in the scope (GUI are off-scope).
+Only back-office API is in the scope (GUI are off-scope).
 
-# Book theses overview
+# Book's these overview
 
 ## Hypothesis
 List:
 * test code involve maintenance cost, low-value test code should be deleted
-* mockist school (mock all dependencies) cause test brittleness: such test raise false positive while refactoring 
+* mockist school (mock all dependencies) cause test brittleness: such test raises false positive while refactoring 
 * output-based test does not suffer from such brittleness
-* output-based test require side-effect containement in production code
-* side-effect containement can be reached using application architecture (eg. hexagonal, functional)
+* output-based test require side effect containment in production code
+* side effect containment can be reached using application architecture (eg. hexagonal, functional)
 
 ## Conclusion
 Coding is a tradeoff
@@ -64,14 +64,14 @@ Test types:
       * no mock
 * integration test:
     * scope :
-        * happy path, exercice all components in the less possible scenarios
+        * on happy paths, exercice all components in the less possible scenarios
         * all other paths, not tested in unit test
     * isolation:
         * use real collaborators in
             * application, domain, infrastructure 
             * in infrastructure, use a real database
         * mock only 
-            * unmanaged depency (here, message bus)
+            * unmanaged dependency (here, message bus)
             * using handwritten mock  
 
 # Implementation
@@ -85,18 +85,18 @@ Codebase comes in several flavors, to widen understanding:
    
 # Repository building
 It will follow these steps:
-* port procedural C# codebase from book to a [procedural JS](../master/src/procedural/javascript)
+* port procedural C# codebase from the book to a [procedural JS](../master/src/procedural/javascript)
 * write [characterization test](../master/test/characterization)
 * write [pg-pl-sql port](../master/src/procedural/pg-pl-sql), using characterization test 
-* port OOP hexagonal C# codebase from book to [JS OOP hexagonal](../master/src/object-oriented/hexagonal-event/code/)
+* port OOP hexagonal C# codebase from the book to [JS OOP hexagonal](../master/src/object-oriented/hexagonal-event/code/)
 * write test for OOP hexagonal with best practice from book
 * write test for OOP hexagonal with anti-patterns (eg. unit-testing everything, using mocks)
-* compare costs and benefits of each solutions
+* compare costs and benefits of each solution
 
 # Install
 You'll need:
 * node and npm 
-* a running posgresql instance, with  (for full experience, add [http extension](https://github.com/pramsey/pgsql-http))
+* a running postgresql instance, with  (for full experience, add [http extension](https://github.com/pramsey/pgsql-http))
 
 ## Steps 
 * get the source:
@@ -122,7 +122,7 @@ To execute code manually:
 * choose your implementation by modifying `const sutPath = <IMPLEMENTATION> ` in [server.js](../master/server.js#L6)
 * run `npm start`
 
-To run characterization tests interactively in you IDE on an implementation:
+To run characterization tests interactively in your IDE on an implementation:
 * alter the following line in [change-user-email.test.js](../master/test/characterization/change-user-email.test.js)
 ```
 } else {
