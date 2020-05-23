@@ -37,7 +37,7 @@ const changeUserEmail = async function ({ messageBus, id, newEmail}) {
     await Promise.all(
         user.emailChangedEvents.map(async (emailChangedEvent) => {
             await messageBus.propagateEmailChange({
-                userId: emailChangedEvent.userId,
+                id: emailChangedEvent.userId,
                 newEmail: emailChangedEvent.newEmail
             });
         })
