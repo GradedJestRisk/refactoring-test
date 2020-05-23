@@ -8,7 +8,7 @@ $BODY$
 DECLARE
 
     -- Variables --
-    change_result                 TEXT;
+    http_extension_count          INTEGER;
     message_json                  TEXT;
     response_code                 INTEGER;
     response_data                 TEXT;
@@ -16,10 +16,16 @@ DECLARE
     -- Constants --
 
     -- Return messages
-    CHANGE_PROPAGATED    CONSTANT TEXT = '';
-    MESSAGE_REJECTED     CONSTANT TEXT    := 'Message has been rejected by http://httpbin.org/put';
+    CHANGE_PROPAGATED    CONSTANT TEXT := '';
+    MESSAGE_REJECTED     CONSTANT TEXT := 'Message has been rejected by http://httpbin.org/put';
 
 BEGIN
+
+    SELECT COUNT(1) INTO http_extension_count FROM pg_extension WHERE extname = 'http';
+
+    IF http_extension_count = 0 THEN
+        RETURN CHANGE_PROPAGATED;
+    END IF;
 
     message_json := '{ type: ''emailChangedEvent'', userId: ''' || p_user_id || ''', email: ''' || p_email || ''' }';
 

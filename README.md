@@ -115,28 +115,6 @@ You'll need:
 * create DB structure (2 tables): run `npx knex migrate:latest`
 * run the test <code>npm test</code>
 
-
-If you installed the http extension, uncomment [the following lines](../master/src/procedural/pg-pl-sql/change-user-email.sql#L122-L138)
-```
-    -- Propagate changes
-    message_json := '{ type: ''emailChangedEvent'', userId: ''' || p_id || ''', email: ''' || p_new_email || ''' }';
-
-    SELECT status,
-           content::json ->> 'data' AS data
-    INTO
-        response_code,
-        response_data
-    FROM
-        http_put('http://httpbin.org/put', message_json, 'text/plain');
-
-    RAISE NOTICE 'response code: %', response_code;
-    RAISE NOTICE 'response data: %', response_data;
-
-    IF response_code != 200 THEN
-        RETURN MESSAGE_REJECTED;
-    END IF;
-```
-
 ## Development purpose
 
 To execute code manually:
