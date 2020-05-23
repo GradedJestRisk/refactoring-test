@@ -144,11 +144,12 @@ Units:
 * time: milliseconds
 * size: characters
 
-| Implementation     | Code <br> size   | Code <br> execution time | Unit test <br> size  | Unit test <br>  execution time | Integration test <br> size | Char. test <br> execution time   |
-|--------------------|---------------|----------|----------|-------|---------|---------|
-| Procedural DB      | 650           | 1        | N/A      | N/A   | N/A     | 100     |  
-| Procedural JS      | 1 427         | ?        |  N/A     | N/A   | N/A     | 1000    |  
-| OOP Hexagonal JS   | 1 756         | ?        | 2 500    | 5     | ?       | 1000    |     
+| Implementation     | Code <br> size   | Code <br> execution time | Unit test <br> size  | Unit test <br>  execution time | Integration test <br> size  | Integration test <br> execution time | Char. test <br> execution time   |
+|--------------------|---------------|----------|----------|-------|---------|---------|---------|
+| Procedural DB      | 4 250         | 1        | N/A      | N/A   | N/A     | N/A |  100     |  
+| Procedural JS      | 2 750         | ?        |  N/A     | N/A   | N/A     | N/A | 1000    |  
+| OOP Hexagonal JS   | 5 590         | ?        | 2 500    | 5     | 1 750   | 50  | 1000    |
+     
 
 | Helper            | Code     |
 |-------------------|----------|
