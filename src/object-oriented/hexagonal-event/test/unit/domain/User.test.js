@@ -5,7 +5,7 @@ const EmailChangedEvent = require('../../../code/shared/EmailChangedEvent');
 const chai = require('chai');
 chai.should();
 
-describe('changeEmail', () => {
+describe('unit | changeEmail', () => {
 
     it('should do many things when changing email from corporate to non corporate', async () => {
         const company = new Company({domainName: 'mycorp.com', numberOfEmployees: 1});
