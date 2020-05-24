@@ -30,7 +30,7 @@ chai.use(require('chai-as-promised'));
 const userType = {Customer: 1, Employee: 2};
 const COMPANY_DOMAIN_NAME = 'this-corp.com';
 
-describe('change user email', () => {
+describe('characterization | changeUserEmail', () => {
 
     describe('when user exists', () => {
 
