@@ -2,9 +2,10 @@ const chai = require('chai');
 chai.should();
 
 const mut = require('../../code/application/user-controller');
+const messageBus = require('../../code/infrastructure/unmanaged-dependencies/message-bus');
 
 // Test helpers
-const MessageBusSpy = require('./MessageBusSpy');
+const HttpClientSpy = require('./httpClientSpy');
 const db = require('./../../../../../test/characterization/database-helper');
 
 // Test values
@@ -22,7 +23,8 @@ describe('integration | changeUserEmail', () => {
 
         // Arrange
 
-        const messageBusSpy = new MessageBusSpy();
+        const httpClientSpy = new HttpClientSpy();
+        messageBus.setHttpClient(httpClientSpy);
 
         const employeeCount = 1;
         await db.addCompany(employeeCount);
@@ -39,7 +41,7 @@ describe('integration | changeUserEmail', () => {
 
         const newCompanyDomainName = 'that-corp.com';
         const newEmail = userName + '@' + newCompanyDomainName;
-        const emailUpdate = {messageBus: messageBusSpy, id: user.id, newEmail};
+        const emailUpdate = {messageBus, id: user.id, newEmail};
 
         // Act
         const response = await mut(emailUpdate);
@@ -54,7 +56,7 @@ describe('integration | changeUserEmail', () => {
         const actualEmployeeCount = await db.getCompanyEmployeeCount();
         actualEmployeeCount.should.eq(0);
 
-        messageBusSpy.shouldSendNumberOfMessages(1).withEmailChangedMessage( { id: user.id, newEmail});
+        httpClientSpy.shouldSendNumberOfMessages(1).withEmailChangedMessage( { id: user.id, newEmail});
 
     });
 });
