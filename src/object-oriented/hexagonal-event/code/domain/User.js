@@ -1,4 +1,4 @@
-﻿const EmailChangedEvent = require('../shared/EmailChangedEvent');
+﻿const emailChangedEvent = require('../shared/email-changed-event');
 const userType = {
     Customer: 1,
     Employee: 2
@@ -40,7 +40,7 @@ class User {
         }
 
         this.email = newEmail;
-        this.emailChangedEvents.push(new EmailChangedEvent({userId: this.id, newEmail}));
+        this.emailChangedEvents.push(emailChangedEvent.create({userId: this.id, newEmail}));
     }
 }
 

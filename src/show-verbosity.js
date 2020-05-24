@@ -19,7 +19,7 @@ const files = [
     '/object-oriented/hexagonal-event/code/infrastructure/managed-dependencies/company-repository.js',
     '/object-oriented/hexagonal-event/code/infrastructure/managed-dependencies/user-repository.js',
     '/object-oriented/hexagonal-event/code/infrastructure/unmanaged-dependencies/message-bus.js',
-    '/object-oriented/hexagonal-event/code/shared/EmailChangedEvent.js',
+    '/object-oriented/hexagonal-event/code/shared/email-changed-event.js',
     // OO - Test
     '/object-oriented/hexagonal-event/test/unit/domain/User.test.js',
     '/object-oriented/hexagonal-event/test/integration/change-user-email.test.js',
