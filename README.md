@@ -89,9 +89,12 @@ It will follow these steps:
 * write [characterization test](../master/test/characterization)
 * write [pg-pl-sql port](../master/src/procedural/pg-pl-sql), using characterization test 
 * port OOP hexagonal C# codebase from the book to [JS OOP hexagonal](../master/src/object-oriented/hexagonal-event/code/)
-* write test for OOP hexagonal with best practice from book
-* write test for OOP hexagonal with anti-patterns (eg. unit-testing everything, using mocks)
-* compare costs and benefits of each solution
+* write test for OOP hexagonal 
+    * with best practice from book
+        * [unit](../master/src/object-oriented/hexagonal-event/test/unit/domain/User.test.js)
+        * [integration](../master/src/object-oriented/hexagonal-event/test/integration/change-user-email.test.js)
+    * with anti-patterns (eg. unit-testing everything, using mocks)
+* [compare](#compare-implementations) costs and benefits of each solution
 
 # Install
 You'll need:
