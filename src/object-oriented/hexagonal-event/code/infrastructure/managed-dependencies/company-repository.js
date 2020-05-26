@@ -1,11 +1,10 @@
-const knex = require('../../../../../../knex/knex');
 
-const getCompany = function () {
-    return knex('company').first();
+const getCompany = function (transaction) {
+    return transaction('company').first();
 }
 
-const updateEmployeeCount = function (number) {
-    return knex('company').update({numberOfEmployees: number});
+const updateEmployeeCount = function (transaction, number) {
+    return transaction('company').update({numberOfEmployees: number});
 }
 
 module.exports = { getCompany, updateEmployeeCount };

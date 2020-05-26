@@ -184,6 +184,20 @@ describe('characterization | changeUserEmail', () => {
                 });
 
             });
+
+            it('message should be returned', async () => {
+
+                await db.addCompany(1);
+                const user = {id: 0, email: 'employee_one@this-corp.com', type: userType.Employee, isEmailConfirmed: true};
+                const newEmail = 'employee-one@mycorp.com';
+                await db.addUser(user);
+
+                const emailUpdate = {id: user.id, newEmail};
+                const message = await changeUserEmail(emailUpdate);
+
+                message.should.eq("OK");
+
+            });
         });
 
         describe('and email is taken', () => {
@@ -223,7 +237,7 @@ describe('characterization | changeUserEmail', () => {
             await db.removeAllUsers();
         });
 
-        it('should throw undefined email', async () => {
+        it('should do (bug ?)', async () => {
             await db.removeAllUsers();
             const newEmail = 'employee-one@mycorp.com';
             const emailUpdate = {id: 1, newEmail};
@@ -232,13 +246,16 @@ describe('characterization | changeUserEmail', () => {
 
             if (sutPath === sutPathProceduralJS) {
                 rejectionMessage = "Cannot read property 'email' of undefined";
+                await expect(changeUserEmail(emailUpdate)).to.be.rejectedWith(rejectionMessage);
             } else if (sutPath === sutPathProceduralDB) {
                 rejectionMessage = "Cannot read property 'email' of undefined";
+                await expect(changeUserEmail(emailUpdate)).to.be.rejectedWith(rejectionMessage);
             } else if (sutPath === sutPathOOPHexagonalEventJS) {
-                rejectionMessage = "Cannot destructure property 'id' of 'undefined' as it is undefined.";
+                const response = await changeUserEmail(emailUpdate);
+                response.should.eq('user does not exists');
             }
 
-            await expect(changeUserEmail(emailUpdate)).to.be.rejectedWith(rejectionMessage);
+
 
         });
     });

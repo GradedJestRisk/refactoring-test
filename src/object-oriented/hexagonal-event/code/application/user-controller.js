@@ -2,48 +2,69 @@ const userRepository = require('../infrastructure/managed-dependencies/user-repo
 const companyRepository = require('../infrastructure/managed-dependencies/company-repository')
 const User = require('../domain/User');
 const Company = require('../domain/Company');
+const knex = require('../../../../../knex/knex');
 
 const SUCCESSFUL_EXECUTION_MESSAGE = 'OK'
 
-const changeUserEmail = async function ({ messageBus, id, newEmail}) {
+const changeUserEmail = async function ({messageBus, id, newEmail}) {
 
-    // Call repository with canExecute pattern - is this OK ?
-    const emailAlreadyTakenMessage = await userRepository.isEmailAlreadyTaken(newEmail);
-    if (emailAlreadyTakenMessage != null) {
-        return emailAlreadyTakenMessage;
-    }
+    try {
+        return await knex.transaction(async function(transaction){
 
-    // Get data
-    const userData = await userRepository.getUserById(id);
-    const user = new User(userData);
+            // Call repository with canExecute pattern, not on domain object => is this OK ?
+            const userDoesNotExistsMessage = await userRepository.userExists(transaction, id);
+            if ( userDoesNotExistsMessage != null) {
+                return userDoesNotExistsMessage;
+            }
 
-    // Call domain with canExecute pattern
-    const errorMessage = user.canChangeEmail();
+            const emailAlreadyTakenMessage = await userRepository.isEmailAlreadyTaken(transaction, newEmail);
+            if (emailAlreadyTakenMessage != null) {
+                return emailAlreadyTakenMessage;
+            }
 
-    if (errorMessage != null) {
-        return errorMessage;
-    }
+            // Get data
+            const userData = await userRepository.getUserById(transaction, id);
+            const user = new User(userData);
 
-    // Get data
-    const companyData = await companyRepository.getCompany();
-    const company = new Company(companyData);
+            // Call domain with canExecute pattern
+            const errorMessage = user.canChangeEmail();
 
-    // Call domain
-    await user.changeEmail(newEmail, company);
+            if (errorMessage != null) {
+                console.log('errorMessage' + errorMessage);
+                return errorMessage;
 
-    // Propagate side effects
-    await companyRepository.updateEmployeeCount(company.numberOfEmployees);
-    await userRepository.saveUser({ id: user.id, email: user.email, type : user.type, isEmailConfirmed: user.isEmailConfirmed});
-    await Promise.all(
-        user.emailChangedEvents.map(async (emailChangedEvent) => {
-            await messageBus.propagateEmailChange({
-                id: emailChangedEvent.userId,
-                newEmail: emailChangedEvent.newEmail
+            }
+
+            // Get data
+            const companyData = await companyRepository.getCompany(transaction);
+            const company = new Company(companyData);
+
+            // Call domain
+            await user.changeEmail(newEmail, company);
+
+            // Propagate side effects
+            await companyRepository.updateEmployeeCount(transaction, company.numberOfEmployees);
+            await userRepository.saveUser(transaction, {
+                id: user.id,
+                email: user.email,
+                type: user.type,
+                isEmailConfirmed: user.isEmailConfirmed
             });
-        })
-    );
+            await Promise.all(
+                user.emailChangedEvents.map(async (emailChangedEvent) => {
+                    await messageBus.propagateEmailChange({
+                        id: emailChangedEvent.userId,
+                        newEmail: emailChangedEvent.newEmail
+                    });
+                })
+            );
 
-    return SUCCESSFUL_EXECUTION_MESSAGE;
+            return SUCCESSFUL_EXECUTION_MESSAGE;
+
+        })
+    } catch (error) {
+        console.error("Error raised during transaction:" + error);
+    }
 }
 
 module.exports = changeUserEmail;
