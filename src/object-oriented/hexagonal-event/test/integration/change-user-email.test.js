@@ -19,25 +19,27 @@ describe('integration | changeUserEmail', () => {
         await db.removeAll();
     });
 
+    const createUser = async function ({id = 0, email = 'john.doe@this-corp.com', type = userType.Employee, isEmailConfirmed = false}) {
+        const user = {id, email, type, isEmailConfirmed};
+        await db.addUser(user);
+        return user;
+    };
+
+    const createCompany = async function ({employeeCount = 1}) {
+        await db.addCompany(employeeCount);
+    };
+
     it('changing email from corporate to non corporate', async () => {
 
         // Arrange
-
         const httpClientSpy = new HttpClientSpy();
         messageBus.setHttpClient(httpClientSpy);
 
-        const employeeCount = 1;
-        await db.addCompany(employeeCount);
+        await createCompany({});
 
         const userName = 'john.doe';
         const email = userName + '@' + COMPANY_DOMAIN_NAME;
-        const user = {
-            id: 0,
-            email,
-            type: userType.Employee,
-            isEmailConfirmed: false
-        };
-        await db.addUser(user);
+        const user = await createUser({email, type: userType.Employee});
 
         const newCompanyDomainName = 'that-corp.com';
         const newEmail = userName + '@' + newCompanyDomainName;
@@ -56,7 +58,7 @@ describe('integration | changeUserEmail', () => {
         const actualEmployeeCount = await db.getCompanyEmployeeCount();
         actualEmployeeCount.should.eq(0);
 
-        httpClientSpy.shouldSendNumberOfMessages(1).withEmailChangedMessage( { id: user.id, newEmail});
+        httpClientSpy.shouldSendNumberOfMessages(1).withEmailChangedMessage({id: user.id, newEmail});
 
     });
 });
