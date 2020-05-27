@@ -3,9 +3,8 @@ const Company = require('../../../code/domain/Company');
 const emailChangedEvent = require('../../../code/shared/email-changed-event');
 
 const chai = require('chai');
-const expect = chai.expect;
 chai.should();
-chai.use(require('chai-as-promised'));
+
 
 describe('unit | changeEmail', () => {
 
