@@ -18,7 +18,7 @@ const changeUserEmail = async function ({id, newEmail}) {
     const userWithEmail = await database.getUserByEmail(newEmail);
     const isEmailTaken = (userWithEmail.length !== 0);
     if (isEmailTaken) {
-        return "Email is taken";
+        return "email is taken";
     }
 
     const companyData = await database.getCompany();

@@ -4,6 +4,9 @@ const userType = {
     Employee: 2
 }
 
+const assert = require('assert').strict;
+
+
 class User {
     constructor({id, email, type, isEmailConfirmed}) {
         this.id = id;
@@ -14,14 +17,12 @@ class User {
     }
 
     canChangeEmail() {
-        if (!this.isEmailConfirmed)
-            return "Can't change email after it's confirmed";
-
-        return null;
+        assert(this.isEmailConfirmed === false,'can not change email after after its confirmation');
     };
 
-    async changeEmail(newEmail, company) {
-        //Precondition.Requires(CanChangeEmail() == null);
+    changeEmail(newEmail, company) {
+
+        this.canChangeEmail();
 
         if (this.email === newEmail)
             return;

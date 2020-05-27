@@ -14,7 +14,7 @@ const getUserById = async function (transaction, id) {
 }
 
 const isEmailAlreadyTaken = async function (transaction, email) {
-    const EMAIL_IS_TAKEN_MESSAGE = 'Email is taken';
+    const EMAIL_IS_TAKEN_MESSAGE = 'email is taken';
     const emailCount = (await transaction('user').where({email}).count().first()).count;
     if (emailCount > 0) {
         return EMAIL_IS_TAKEN_MESSAGE;

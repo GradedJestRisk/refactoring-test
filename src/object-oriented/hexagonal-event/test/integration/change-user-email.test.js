@@ -35,7 +35,7 @@ describe('integration | changeUserEmail', () => {
             id: 0,
             email,
             type: userType.Employee,
-            isEmailConfirmed: true
+            isEmailConfirmed: false
         };
         await db.addUser(user);
 

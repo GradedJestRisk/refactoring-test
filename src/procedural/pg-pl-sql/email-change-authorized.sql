@@ -14,8 +14,8 @@ DECLARE
 
     -- Return messages
     CHANGE_AUTHORIZED    CONSTANT TEXT    := '';
-    USER_NOT_FOUND       CONSTANT TEXT    := 'user not found';
-    EMAIL_ALREADY_TAKEN  CONSTANT TEXT    := 'Email is taken';
+    USER_NOT_FOUND       CONSTANT TEXT    := 'user does not exists';
+    EMAIL_ALREADY_TAKEN  CONSTANT TEXT    := 'email is taken';
 
 BEGIN
 

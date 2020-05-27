@@ -3,7 +3,9 @@ const Company = require('../../../code/domain/Company');
 const emailChangedEvent = require('../../../code/shared/email-changed-event');
 
 const chai = require('chai');
+const expect = chai.expect;
 chai.should();
+chai.use(require('chai-as-promised'));
 
 describe('unit | changeEmail', () => {
 
@@ -11,7 +13,7 @@ describe('unit | changeEmail', () => {
         const company = new Company({domainName: 'mycorp.com', numberOfEmployees: 1});
         const sut = new User({id: 1, email: 'user@mycorp.com', type: 2, isEmailConfirmed: false});
 
-        await sut.changeEmail("new@gmail.com", company);
+        sut.changeEmail("new@gmail.com", company);
 
         company.numberOfEmployees.should.eq(0);
         sut.email.should.eq("new@gmail.com");
@@ -23,7 +25,7 @@ describe('unit | changeEmail', () => {
         const company = new Company({domainName: 'mycorp.com', numberOfEmployees: 0});
         const sut = new User({id: 1, email: 'new@gmail.com', type: 1, isEmailConfirmed: false});
 
-        await sut.changeEmail("new@mycorp.com", company);
+        sut.changeEmail("new@mycorp.com", company);
 
         company.numberOfEmployees.should.eq(1);
         sut.email.should.eq("new@mycorp.com");
@@ -35,7 +37,7 @@ describe('unit | changeEmail', () => {
         const company = new Company({domainName: 'mycorp.com', numberOfEmployees: 1});
         const sut = new User({id: 1, email: 'user@mycorp.com', type: 2, isEmailConfirmed: false});
 
-        await sut.changeEmail('new@mycorp.com', company);
+        sut.changeEmail('new@mycorp.com', company);
 
         company.numberOfEmployees.should.eq(1);
         sut.email.should.eq('new@mycorp.com');
@@ -47,12 +49,28 @@ describe('unit | changeEmail', () => {
         const company = new Company({domainName: 'mycorp.com', numberOfEmployees: 1});
         const sut = new User({id: 1, email: 'user@mycorp.com', type: 2, isEmailConfirmed: false});
 
-        await sut.changeEmail('user@mycorp.com', company);
+        sut.changeEmail('user@mycorp.com', company);
 
         company.numberOfEmployees.should.eq(1);
         sut.email.should.eq('user@mycorp.com');
         sut.type.should.eq(2);
         sut.emailChangedEvents.should.be.deep.equal([]);
+    });
+
+    it('should handle confirmed email', async () => {
+        const emailAlreadyConfirmedMessage = 'can not change email after after its confirmation';
+        const company = new Company({domainName: 'mycorp.com', numberOfEmployees: 1});
+        const userData = {id: 1, email: 'user@mycorp.com', type: 2, isEmailConfirmed: true, emailChangedEvents: []};
+        const sut = new User(userData);
+
+        try {
+            sut.changeEmail('user@mycorp.com', company);
+        } catch (exception) {
+            exception.message.should.eq(emailAlreadyConfirmedMessage)
+
+        }
+        sut.should.be.deep.equal(userData);
+
     });
 
 });

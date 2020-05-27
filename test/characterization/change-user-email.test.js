@@ -52,7 +52,7 @@ describe('characterization | changeUserEmail', () => {
             it('email should be updated', async () => {
 
                 await db.addCompany(1);
-                const user = {id: 0, email: 'employee_one@this-corp.com', type: userType.Employee, isEmailConfirmed: true};
+                const user = {id: 0, email: 'employee_one@this-corp.com', type: userType.Employee, isEmailConfirmed: false};
                 const newEmail = 'employee-one@mycorp.com';
                 await db.addUser(user);
 
@@ -71,7 +71,7 @@ describe('characterization | changeUserEmail', () => {
                 const username = 'john.doe';
                 const actualCompanyDomainName = COMPANY_DOMAIN_NAME;
                 const actualEmail = username + '@' + actualCompanyDomainName;
-                const user = {id: 0, email: actualEmail, type: userType.Employee, isEmailConfirmed: true};
+                const user = {id: 0, email: actualEmail, type: userType.Employee, isEmailConfirmed: false};
                 await db.addUser(user);
                 const newCompanyDomainName = 'that-corp.com';
                 const newEmail = username + '@' + newCompanyDomainName;
@@ -97,7 +97,7 @@ describe('characterization | changeUserEmail', () => {
 
 
                 await db.addCompany(1);
-                const user = {id: 0, email: 'employee_one@this-corp.com', type: 2, isEmailConfirmed: true};
+                const user = {id: 0, email: 'employee_one@this-corp.com', type: 2, isEmailConfirmed: false};
                 const newEmail = 'employee-one@mycorp.com';
                 await db.addUser(user);
                 const emailUpdate = {id: user.id, newEmail};
@@ -129,7 +129,7 @@ describe('characterization | changeUserEmail', () => {
                         id: 0,
                         email: 'user_one@this-corp.com',
                         type: userType.Customer,
-                        isEmailConfirmed: true
+                        isEmailConfirmed: false
                     };
                     await db.addUser(user);
                     const newEmail = 'user-one@mthis-corp.com';
@@ -149,7 +149,7 @@ describe('characterization | changeUserEmail', () => {
                         id: 0,
                         email: 'user_one@that-corp.com',
                         type: userType.Customer,
-                        isEmailConfirmed: true
+                        isEmailConfirmed: false
                     };
                     await db.addUser(user);
                     const newEmail = 'user_one@this-corp.com';
@@ -170,7 +170,7 @@ describe('characterization | changeUserEmail', () => {
                         id: 0,
                         email: 'user_one@this-corp.com',
                         type: userType.Employee,
-                        isEmailConfirmed: true
+                        isEmailConfirmed: false
                     };
                     await db.addUser(user);
                     const newEmail = 'user_one@that-corp.com';
@@ -188,14 +188,16 @@ describe('characterization | changeUserEmail', () => {
             it('message should be returned', async () => {
 
                 await db.addCompany(1);
-                const user = {id: 0, email: 'employee_one@this-corp.com', type: userType.Employee, isEmailConfirmed: true};
+                const user = {id: 0, email: 'employee_one@this-corp.com', type: userType.Employee, isEmailConfirmed: false};
                 const newEmail = 'employee-one@mycorp.com';
                 await db.addUser(user);
 
                 const emailUpdate = {id: user.id, newEmail};
                 const message = await changeUserEmail(emailUpdate);
 
-                message.should.eq("OK");
+                if (sutPath !== sutPathProceduralJS) {
+                    message.should.eq('OK');
+                }
 
             });
         });
@@ -204,22 +206,23 @@ describe('characterization | changeUserEmail', () => {
 
             it('it should return a message', async () => {
 
-                const user = {id: 0, email: 'employee_one@this-corp.com', type: 2, isEmailConfirmed: true};
+                const user = {id: 0, email: 'employee_one@this-corp.com', type: 2, isEmailConfirmed: false};
                 const newEmail = 'employee-one@mycorp.com';
-                const userSameEmail = {id: 1, email: newEmail, type: 2, isEmailConfirmed: true};
+                const userSameEmail = {id: 1, email: newEmail, type: 2, isEmailConfirmed: false};
                 await db.addUsers([user, userSameEmail]);
 
                 const emailUpdate = {id: user.id, newEmail};
                 const response = await changeUserEmail(emailUpdate);
 
-                response.should.eq('Email is taken');
+                response.should.eq('email is taken');
+
             });
 
             it('email should not be updated', async () => {
 
-                const user = {id: 0, email: 'employee_one@this-corp.com', type: 2, isEmailConfirmed: true};
+                const user = {id: 0, email: 'employee_one@this-corp.com', type: 2, isEmailConfirmed: false};
                 const newEmail = 'employee-one@mycorp.com';
-                const userSameEmail = {id: 1, email: newEmail, type: 2, isEmailConfirmed: true};
+                const userSameEmail = {id: 1, email: newEmail, type: 2, isEmailConfirmed: false};
                 await db.addUsers([user, userSameEmail]);
 
                 const emailUpdate = {id: user.id, newEmail};
@@ -247,16 +250,10 @@ describe('characterization | changeUserEmail', () => {
             if (sutPath === sutPathProceduralJS) {
                 rejectionMessage = "Cannot read property 'email' of undefined";
                 await expect(changeUserEmail(emailUpdate)).to.be.rejectedWith(rejectionMessage);
-            } else if (sutPath === sutPathProceduralDB) {
-                rejectionMessage = "Cannot read property 'email' of undefined";
-                await expect(changeUserEmail(emailUpdate)).to.be.rejectedWith(rejectionMessage);
-            } else if (sutPath === sutPathOOPHexagonalEventJS) {
+            } else {
                 const response = await changeUserEmail(emailUpdate);
                 response.should.eq('user does not exists');
             }
-
-
-
         });
     });
 
