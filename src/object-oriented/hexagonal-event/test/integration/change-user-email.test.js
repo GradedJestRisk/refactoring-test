@@ -7,6 +7,8 @@ const messageBus = require('../../code/infrastructure/unmanaged-dependencies/mes
 // Test helpers
 const HttpClientSpy = require('./httpClientSpy');
 const db = require('./../../../../../test/characterization/database-helper');
+const knex = require('../../../../../knex/knex');
+const User = require('./UserAssertion');
 
 // Test values
 const userType = {Customer: 1, Employee: 2};
@@ -28,6 +30,12 @@ describe('integration | changeUserEmail', () => {
     const createCompany = async function ({employeeCount = 1}) {
         await db.addCompany(employeeCount);
     };
+
+    const getUserForAssert = async function (id) {
+        return new User(await knex('user').where('id', id).first());
+    };
+
+
 
     it('changing email from corporate to non corporate', async () => {
 
@@ -51,9 +59,8 @@ describe('integration | changeUserEmail', () => {
         // Assert
         response.should.eq(SUCCESSFUL_EXECUTION_MESSAGE);
 
-        const actualUser = await db.getUser(user.id);
-        actualUser.email.should.eq(newEmail);
-        actualUser.type.should.eq(userType.Customer);
+        const userForAssert = await getUserForAssert(user.id);
+        userForAssert.shouldExists().withEmail(newEmail).withType(userType.Customer);
 
         const actualEmployeeCount = await db.getCompanyEmployeeCount();
         actualEmployeeCount.should.eq(0);
