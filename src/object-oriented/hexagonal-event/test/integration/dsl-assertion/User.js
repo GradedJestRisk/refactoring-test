@@ -1,9 +1,16 @@
 const chai = require('chai');
 chai.should();
 
-class UserAssertion{
-    constructor(user) {
+const knex = require('../../../../../../knex/knex');
+
+class User{
+    constructor(id) {
+        this.id = id;
+    }
+    async fromDB(){
+        const user = await knex('user').where('id', this.id).first();
         this.user = user;
+        return this;
     }
     shouldExists(){
         this.user.should.not.be.undefined;
@@ -20,4 +27,4 @@ class UserAssertion{
 
 }
 
-module.exports = UserAssertion;
+module.exports = User;
