@@ -37,21 +37,58 @@ Only back-office API is in the scope (GUI are off-scope).
 # Book's these overview
 
 ## Hypothesis
-List:
-* test code involve maintenance cost, low-value test code should be deleted
-* mockist school (mock all dependencies) cause test brittleness: such test raises false positive while refactoring 
-* output-based test does not suffer from such brittleness
-* output-based test require side effect containment in production code
-* side effect containment can be reached using application architecture (eg. hexagonal, functional)
+Automated testing aims at making change cheaper, by making sure:
+* the new behaviour is what you expected
+* other existing behaviours have not been affected
+
+Automated testing is implemented by code, which should be payed for several times:
+* implementation time;
+* maintenance time.
+
+Therefore, test can make change costlier.
+
+Several ways to design tests:
+* mockist school 
+    * mock all dependencies (eg. most collaborators)
+    * this cause test code bloat and test brittleness: such test raises false positive while refactoring 
+* classical school 
+    * mock only shared dependencies (eg. DB)
+    * this cause less, but still some test brittleness
+* output-based test
+    * mock only unmanaged shared dependencies (eg. external API) 
+    * brittleness is minimum
+* output-based test can be achieved
+    * by restricting side effect to dedicated areas in production code
+    * such containment is provided by indirection, implemented by application architecture pattern: hexagonal, functional
+
+Output-based test look like the best bet.
+
+Transitioning a codebase to output-based testing is a 2 steps refactoring process:
+ * refactor production code (thus breaking existing brittle test) to achieve containment
+ * refactor test code
 
 ## Conclusion
-Coding is a tradeoff
+Coding is a tradeoff between code performance and change cost
 
-| Architecture     | Code<br>maintenance<br>cost | <br>Code<br>performance | <br>Test<br>cost |
-|------------------|---------------------|-------------------------|-----------------------|
-| No indirection   | +                   | +                       | +                     |
-| Some indirection | +                   | -                       | -                     |
+| Indirection  | Code change     | Code performance | Test change |
+|--------------|-----------------|------------------|-------------|
+| None         | costlier        | higher           | costlier    |
+| Some         | cheaper         | lower            | cheaper     |
+| Too many     | costlier        | lower            | costlier    |
 
+Indirection refers to can be implemented by design patterns, layered architecture. 
+
+Code change (maintenance) cost can be broken down in time:
+* to understand existing code
+* to make appropriate change
+* fix unintended side effects (regression)
+
+Test change (maintenance) cost can be broken down in time:
+* to understand existing test
+* to make appropriate change to support a code feature change
+* to make appropriate change to support a code refactoring change (false positive)
+
+1: Indirection samples are design patterns, layered architecture 
 
 ## Target testing strategy
 Test types:
@@ -64,14 +101,14 @@ Test types:
       * no mock
 * integration test:
     * scope :
-        * on happy paths, exercice all components in the less possible scenarios
-        * all other paths, not tested in unit test
+        * happy path, exercice all components in the least possible scenarios
+        * all other paths untested in unit test
     * isolation:
         * use real collaborators in
-            * application, domain, infrastructure 
-            * in infrastructure, use a real database
-        * mock only 
-            * unmanaged dependency (here, message bus)
+            * application, domain 
+            * infrastructure : managed dependencies only (eg. DB)
+        * mock 
+            * infrastructure: unmanaged dependency only (here, external message bus/API)
             * using handwritten mock  
 
 # Implementation
