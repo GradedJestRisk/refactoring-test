@@ -118,7 +118,6 @@ Codebase comes in several flavors, to widen understanding:
    * Javascript
 * object-oriented
    * hexagonal architecture
-   * functional architecture
    
 # Repository building
 It will follow these steps:
@@ -134,14 +133,24 @@ It will follow these steps:
 * [compare](#compare-implementations) costs and benefits of each solution
 
 # Install
+
+## Pre-requisites
 You'll need:
-* node and npm 
-* a running postgresql instance, with  (for full experience, add [http extension](https://github.com/pramsey/pgsql-http))
+* node and npm (I used [nvm](https://github.com/GradedJestRisk/js-training/wiki/node#using-nvm))
+* a running postgresql instance:
+    * I used [Docker](https://github.com/GradedJestRisk/db-training/wiki/PostgreSQL#container-docker)
+    * to make optional http call, you'll need [http extension](https://github.com/pramsey/pgsql-http))
 
 ## Steps 
 * get the source:
-  * clone the repo : <code>git clone git@github.com:GradedJestRisk/refactoring-test.git && cd refactoring-test</code>
-  * or download the source code manually, extract and cd 
+  * with git: clone the repo : <code>git clone git@github.com:GradedJestRisk/refactoring-test.git && cd refactoring-test</code>
+  * without git: 
+    *  or download the source code manually, extract and cd 
+    ```
+    curl -LJO https://github.com/GradedJestRisk/refactoring-test/archive/master.zip
+    unzip refactoring-test-master.zip
+    cd    refactoring-test-master
+    ```
 * install dependencies <code>npm install</code>
 * setup your database connection in [knexfile.js](../master/knexfile.js)
 ```
