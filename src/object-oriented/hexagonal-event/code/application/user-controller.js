@@ -3,23 +3,23 @@ const companyRepository = require('../infrastructure/managed-dependencies/compan
 const User = require('../domain/User');
 const Company = require('../domain/Company');
 const knex = require('../../../../../knex/knex');
+const assert = require('assert').strict;
 
-const SUCCESSFUL_EXECUTION_MESSAGE = 'OK'
+const SUCCESSFUL_EXECUTION_MESSAGE = 'OK';
+const USER_DOES_NOT_EXISTS_MESSAGE = 'user does not exists';
+const EMAIL_IS_ALREADY_TAKEN_MESSAGE = 'email is taken';
 
 const changeUserEmail = async function ({messageBus, id, newEmail}) {
 
     try {
-        return await knex.transaction(async function(transaction){
+        return await knex.transaction(async function (transaction) {
 
-            // Call repository with canExecute pattern, not on domain object => is this OK ?
-            const userDoesNotExistsMessage = await userRepository.userExists(transaction, id);
-            if ( userDoesNotExistsMessage != null) {
-                return userDoesNotExistsMessage;
+            if (!await userRepository.userExists(transaction, id)) {
+                return USER_DOES_NOT_EXISTS_MESSAGE;
             }
 
-            const emailAlreadyTakenMessage = await userRepository.isEmailAlreadyTaken(transaction, newEmail);
-            if (emailAlreadyTakenMessage != null) {
-                return emailAlreadyTakenMessage;
+            if (await userRepository.isEmailAlreadyTaken({transaction, email: newEmail, id})){
+                return EMAIL_IS_ALREADY_TAKEN_MESSAGE;
             }
 
             // Get data
@@ -32,7 +32,6 @@ const changeUserEmail = async function ({messageBus, id, newEmail}) {
             if (errorMessage != null) {
                 console.log('errorMessage' + errorMessage);
                 return errorMessage;
-
             }
 
             // Get data
