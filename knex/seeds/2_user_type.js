@@ -9,8 +9,8 @@ exports.seed = function (knex) {
         })
         .then(function () {
             return knex(tableName).insert([
-                {id: 1, label: 'customer'},
-                {id: 2, label: 'employee'}
+                {type: 1, label: 'customer'},
+                {type: 2, label: 'employee'}
             ]);
         });
 };

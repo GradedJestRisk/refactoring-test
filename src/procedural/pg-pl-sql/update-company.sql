@@ -15,7 +15,7 @@ BEGIN
             COUNT(1)
         FROM
             "user" u INNER JOIN user_type ut
-                ON ut.id = u.type
+                ON ut.type = u.type
         WHERE ut.label = EMPLOYEE_LABEL
     )
     WHERE "domainName" = ( SELECT "domainName" FROM company ORDER BY "domainName" LIMIT 1) ;

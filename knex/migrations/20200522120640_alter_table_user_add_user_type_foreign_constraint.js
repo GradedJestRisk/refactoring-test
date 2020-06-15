@@ -2,7 +2,7 @@ const tableName = 'user';
 
 exports.up = function(knex) {
     return knex.schema.alterTable(tableName, (table)=>{
-        table.integer('type').notNullable().references('id').inTable('user_type').alter();
+        table.integer('type').notNullable().references('type').inTable('user_type').alter();
     });
 };
 

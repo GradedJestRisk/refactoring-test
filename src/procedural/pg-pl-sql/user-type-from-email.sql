@@ -29,9 +29,9 @@ BEGIN
     FROM company;
 
     IF new_email_domain = company_domain_name THEN
-        SELECT id INTO user_type_id FROM user_type WHERE label = EMPLOYEE_LABEL;
+        SELECT type INTO user_type_id FROM user_type WHERE label = EMPLOYEE_LABEL;
     ELSE
-        SELECT id INTO user_type_id FROM user_type WHERE label = CUSTOMER_LABEL;
+        SELECT type INTO user_type_id FROM user_type WHERE label = CUSTOMER_LABEL;
     END IF;
 
     RETURN user_type_id;
