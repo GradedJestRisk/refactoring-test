@@ -66,4 +66,4 @@ const changeUserEmail = async function ({messageBus, id, newEmail}) {
     }
 }
 
-module.exports = changeUserEmail;
+module.exports = { changeUserEmail };

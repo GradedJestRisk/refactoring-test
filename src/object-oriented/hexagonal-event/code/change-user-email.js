@@ -1,4 +1,4 @@
-const controller = require('./application/user-controller');
+const controller = require('./application/user-controller').changeUserEmail;
 const messageBus = require('./infrastructure/unmanaged-dependencies/message-bus');
 const httpClient = require('axios');
 messageBus.setHttpClient(httpClient);

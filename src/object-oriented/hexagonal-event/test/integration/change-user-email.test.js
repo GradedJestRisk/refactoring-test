@@ -2,7 +2,7 @@ const chai = require('chai');
 chai.should();
 
 // SUT
-const mut = require('../../code/application/user-controller');
+const mut = require('../../code/application/user-controller').changeUserEmail;
 
 // Unmanaged dependencies collaborator
 const messageBus = require('../../code/infrastructure/unmanaged-dependencies/message-bus');
