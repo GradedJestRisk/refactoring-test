@@ -18,10 +18,12 @@ const Company = require('./dsl-assertion/Company');
 // Constants
 const userType = {Customer: 1, Employee: 2};
 const COMPANY_DOMAIN_NAME = 'this-corp.com';
-const SUCCESSFUL_EXECUTION_MESSAGE = 'OK'
-const EMAIL_IS_ALREADY_TAKEN_MESSAGE = 'email is taken';
-const USER_DOES_NOT_EXISTS_MESSAGE = 'user does not exists';
 
+const message = {
+    SUCCESSFUL_EXECUTION: 'OK',
+    EMAIL_IS_ALREADY_TAKEN: 'email is taken',
+    USER_DOES_NOT_EXISTS: 'user does not exists'
+}
 
 describe('integration | changeUserEmail', () => {
 
@@ -29,7 +31,7 @@ describe('integration | changeUserEmail', () => {
         await db.removeAll();
     });
 
-    it('changing email from corporate to non corporate', async () => {
+    it('should allow email change email from corporate to non corporate', async () => {
 
         // Arrange
         const httpClientSpy = new HttpClientSpy();
@@ -49,7 +51,7 @@ describe('integration | changeUserEmail', () => {
         const response = await mut(emailUpdate);
 
         // Assert
-        response.should.eq(SUCCESSFUL_EXECUTION_MESSAGE);
+        response.should.eq(message.SUCCESSFUL_EXECUTION);
 
         const actualUser = await (new User(userData.id)).fromDB();
         actualUser.shouldExists().withEmail(newEmail).withType(userType.Customer);
@@ -62,7 +64,7 @@ describe('integration | changeUserEmail', () => {
     });
 
 
-    it('changing email to already taken', async () => {
+    it('should reject email change to an already use email', async () => {
 
         // Arrange
         const httpClientSpy = new HttpClientSpy();
@@ -78,12 +80,11 @@ describe('integration | changeUserEmail', () => {
         const response = await mut(emailUpdate);
 
         // Assert
-        //response.should.eq(EMAIL_IS_ALREADY_TAKEN_MESSAGE);
-        response.should.eq(EMAIL_IS_ALREADY_TAKEN_MESSAGE);
+        response.should.eq(message.EMAIL_IS_ALREADY_TAKEN);
 
     });
 
-    it('changing email of non-existing user ', async () => {
+    it('should reject email change of a non-existing user ', async () => {
 
         // Arrange
         const httpClientSpy = new HttpClientSpy();
@@ -96,7 +97,7 @@ describe('integration | changeUserEmail', () => {
         const response = await mut(emailUpdate);
 
         // Assert
-        response.should.eq(USER_DOES_NOT_EXISTS_MESSAGE);
+        response.should.eq(message.USER_DOES_NOT_EXISTS);
 
     });
 });
