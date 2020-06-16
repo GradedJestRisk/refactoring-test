@@ -5,9 +5,11 @@ const Company = require('../domain/Company');
 const knex = require('../../../../../knex/knex');
 const assert = require('assert').strict;
 
-const SUCCESSFUL_EXECUTION_MESSAGE = 'OK';
-const USER_DOES_NOT_EXISTS_MESSAGE = 'user does not exists';
-const EMAIL_IS_ALREADY_TAKEN_MESSAGE = 'email is taken';
+const message = {
+    SUCCESSFUL_EXECUTION: 'OK',
+    EMAIL_IS_ALREADY_TAKEN: 'email is taken',
+    USER_DOES_NOT_EXISTS: 'user does not exists'
+}
 
 const changeUserEmail = async function ({messageBus, id, newEmail}) {
 
@@ -15,11 +17,11 @@ const changeUserEmail = async function ({messageBus, id, newEmail}) {
         return await knex.transaction(async function (transaction) {
 
             if (!await userRepository.userExists(transaction, id)) {
-                return USER_DOES_NOT_EXISTS_MESSAGE;
+                return message.USER_DOES_NOT_EXISTS;
             }
 
             if (await userRepository.isEmailAlreadyTaken({transaction, email: newEmail, id})){
-                return EMAIL_IS_ALREADY_TAKEN_MESSAGE;
+                return message.EMAIL_IS_ALREADY_TAKEN;
             }
 
             // Get data
@@ -58,7 +60,7 @@ const changeUserEmail = async function ({messageBus, id, newEmail}) {
                 })
             );
 
-            return SUCCESSFUL_EXECUTION_MESSAGE;
+            return message.SUCCESSFUL_EXECUTION;
 
         })
     } catch (error) {
