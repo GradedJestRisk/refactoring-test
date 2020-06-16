@@ -3,7 +3,6 @@ const companyRepository = require('../infrastructure/managed-dependencies/compan
 const User = require('../domain/User');
 const Company = require('../domain/Company');
 const knex = require('../../../../../knex/knex');
-const assert = require('assert').strict;
 
 const message = {
     SUCCESSFUL_EXECUTION: 'OK',
@@ -68,4 +67,19 @@ const changeUserEmail = async function ({messageBus, id, newEmail}) {
     }
 }
 
-module.exports = { changeUserEmail };
+const getUser = async function (id) {
+
+    try {
+        return await knex.transaction(async function (transaction) {
+
+            if (!await userRepository.userExists(transaction, id)) {
+                return message.USER_DOES_NOT_EXISTS;
+            }
+            return (await userRepository.getUserById(transaction, id));
+        })
+    } catch (error) {
+        console.error("Error raised during transaction:" + error);
+    }
+}
+
+module.exports = { changeUserEmail, getUser };
