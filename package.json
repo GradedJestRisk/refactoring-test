@@ -4,6 +4,7 @@
   "description": "javascript port of https://www.manning.com/books/unit-testing C# refactor kata",
   "main": "server.js",
   "scripts": {
+    "start:dev": "nodemon start",
     "compile-db-code": "./src/procedural/pg-pl-sql/compile.sh",
     "test": "npm run test:procedural-js && npm run test:procedural-db && npm run test:oop-hexagonal-event-js:char &&  npm run test:oop-hexagonal-event-js:unit && npm run test:oop-hexagonal-event-js:integ",
     "test:procedural-js": "SUT=PROCEDURAL_JS mocha --exit test/characterization/change-user-email.test.js",
@@ -39,7 +40,10 @@
   },
   "homepage": "https://github.com/GradedJestRisk/refactoring-test#readme",
   "dependencies": {
+    "@hapi/boom": "^9.1.0",
+    "@hapi/hapi": "^19.1.1",
     "axios": "^0.19.2",
+    "jsonapi-serializer": "^3.6.6",
     "knex": "^0.21.1",
     "pg": "^8.0.3"
   },
@@ -49,6 +53,7 @@
     "husky": "^4.2.5",
     "letter-count": "^2.8.9",
     "mocha": "^7.1.2",
-    "nock": "^12.0.3"
+    "nock": "^12.0.3",
+    "nodemon": "^2.0.4"
   }
 }

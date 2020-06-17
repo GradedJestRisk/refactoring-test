@@ -29,7 +29,7 @@ describe('integration | getUser', () => {
 
         // Assert
         responseUser.should.deep.equal(dbUser);
-        
+
     });
 
     it('should reject request on non-existing user ', async () => {
