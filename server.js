@@ -1,11 +1,11 @@
 const sutPathProceduralDB = './src/procedural/pg-pl-sql/change-user-email.js';
 const sutPathProceduralJS = './src/procedural/javascript/change-user-email.js';
-const sutPathOOPHexagonalEventJS = './src/object-oriented/hexagonal-event/code/application/in-between-controller.js';
+const sutPathOOPHexagonalEventJS = './src/object-oriented/hexagonal-event/code/application/user-handler.js';
 
 // Choose which implementation to execute
 const sutPath = sutPathOOPHexagonalEventJS;
 
-const controller = require(sutPath);
+const userHandler = require(sutPath);
 
 'use strict';
 
@@ -39,7 +39,7 @@ const init = async () => {
                         return h.response(jsonApiError).code(errorHttpStatusCode).takeover();
                     }
                 },
-                handler: controller.getUser
+                handler: userHandler.getUser
             }
         }
     ]);
