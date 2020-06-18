@@ -1,4 +1,4 @@
-const db = require('./../../../../../../test/characterization/database-helper');
+const db = require('../../../../../../test/characterization/database-helper');
 const userType = {Customer: 1, Employee: 2};
 
 const createUser = async function ({id = 0, email = 'john.doe@this-corp.com', type = userType.Employee, isEmailConfirmed = false}) {

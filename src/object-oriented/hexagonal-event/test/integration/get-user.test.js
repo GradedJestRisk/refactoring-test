@@ -6,7 +6,7 @@ const mut = require('../../code/application/user-controller').getUser;
 
 // Test helpers
 const db = require('./../../../../../test/characterization/database-helper');
-const userMother = require('./object-mother/user');
+const userMother = require('../helper/object-mother/user');
 
 // Constants
 const message = {

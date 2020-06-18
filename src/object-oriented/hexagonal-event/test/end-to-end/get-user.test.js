@@ -4,7 +4,7 @@ chai.should();
 
 // Test helpers
 const db = require('./../../../../../test/characterization/database-helper');
-const userMother = require('../integration/object-mother/user');
+const userMother = require('../helper/object-mother/user');
 
 const baseUrl = 'http://localhost:3000/users/';
 

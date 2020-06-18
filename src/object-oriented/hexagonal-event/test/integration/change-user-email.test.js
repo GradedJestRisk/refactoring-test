@@ -10,10 +10,10 @@ const messageBus = require('../../code/infrastructure/unmanaged-dependencies/mes
 // Test helpers
 const HttpClientSpy = require('./httpClientSpy');
 const db = require('./../../../../../test/characterization/database-helper');
-const userMother = require('./object-mother/user');
-const companyMother = require('./object-mother/company');
-const User = require('./dsl-assertion/User');
-const Company = require('./dsl-assertion/Company');
+const userMother = require('../helper/object-mother/user');
+const companyMother = require('../helper/object-mother/company');
+const User = require('../helper/dsl-assertion/User');
+const Company = require('../helper/dsl-assertion/Company');
 
 // Constants
 const userType = {Customer: 1, Employee: 2};
