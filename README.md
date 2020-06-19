@@ -14,12 +14,15 @@
   * [An overview](#an-overview)
   * [Details](#details)
 
-# Introduction
+# Origin & inspirations
 This code* has been ported from a copyrighted C# version, included in the [Unit Testing Principles, Practices, and Patterns](https://www.manning.com/books/unit-testing) book, published by Manning. The author, Vladimir Khorikov, has explicitly allowed such use here. Otherwise stated, all information and quotes in this file comes from the book. I'm not linked in any way with the author; I would like to experiment its proposals and share them with you.
 
 *: except PostgreSQL PL/SQL version, that I wrote by myself. Referred to as pg-pl-sql in codebase, it'a procedural (imperative) language, executed by the database. Basically, it allows mixing "functional" SQL statements together using basic imperative structures (control flow, variables, array). The aim of using such an unusual programming language is to show cost/benefits of such a compact implementation.
 
-Regarding hexagonal architecture, folders naming convention come from this [blog post](https://blog.octo.com/en/hexagonal-architecture-three-principles-and-an-implementation-example/)
+Regarding hexagonal architecture, there is a plenty of folders naming convention (see the update note in this [blog post](https://blog.octo.com/en/hexagonal-architecture-three-principles-and-an-implementation-example/)):
+ * domain:  port / adapter
+ * user-side / application
+ * server-side / infrastructure
 
 Characterization testing complies with to [Michael Feathers](https://michaelfeathers.silvrback.com/characterization-testing) definition
 

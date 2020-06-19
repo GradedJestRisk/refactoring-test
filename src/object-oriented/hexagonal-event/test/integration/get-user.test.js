@@ -2,7 +2,7 @@ const chai = require('chai');
 chai.should();
 
 // SUT
-const mut = require('../../code/application/user-controller').getUser;
+const mut = require('../../code/user-side/user-controller').getUser;
 
 // Test helpers
 const db = require('./../../../../../test/characterization/database-helper');

@@ -1,5 +1,5 @@
-const userRepository = require('../infrastructure/managed-dependencies/user-repository')
-const companyRepository = require('../infrastructure/managed-dependencies/company-repository')
+const userRepository = require('../server-side/managed-dependencies/user-repository')
+const companyRepository = require('../server-side/managed-dependencies/company-repository')
 const User = require('../domain/User');
 const Company = require('../domain/Company');
 const knex = require('../../../../../knex/knex');

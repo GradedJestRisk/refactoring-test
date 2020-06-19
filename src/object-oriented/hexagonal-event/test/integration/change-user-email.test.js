@@ -2,10 +2,10 @@ const chai = require('chai');
 chai.should();
 
 // SUT
-const mut = require('../../code/application/user-controller').changeUserEmail;
+const mut = require('../../code/user-side/user-controller').changeUserEmail;
 
 // Unmanaged dependencies collaborator
-const messageBus = require('../../code/infrastructure/unmanaged-dependencies/message-bus');
+const messageBus = require('../../code/server-side/unmanaged-dependencies/message-bus');
 
 // Test helpers
 const HttpClientSpy = require('./httpClientSpy');
