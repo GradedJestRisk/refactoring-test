@@ -9,7 +9,7 @@ const messageBus = require('../../code/server-side/unmanaged-dependencies/messag
 
 // Test helpers
 const HttpClientSpy = require('./httpClientSpy');
-const db = require('./../../../../../test/characterization/database-helper');
+const db = require('../../../../../test/database-helper');
 const userMother = require('../helper/object-mother/user');
 const companyMother = require('../helper/object-mother/company');
 const User = require('../helper/dsl-assertion/User');

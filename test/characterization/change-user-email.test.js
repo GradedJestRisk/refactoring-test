@@ -20,7 +20,7 @@ if (process.env.SUT === 'PROCEDURAL_JS') {
 const changeUserEmail = require(sutPath);
 
 const chai = require('chai');
-const db = require('./database-helper');
+const db = require('../database-helper');
 const nock = require('nock')
 
 const expect = chai.expect

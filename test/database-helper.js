@@ -1,4 +1,4 @@
-const knex = require('../../knex/knex');
+const knex = require('../knex/knex');
 
 const removeAllUsers = async function () {
     await knex('user').del();

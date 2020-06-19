@@ -1,6 +1,6 @@
 const sutPathProceduralDB = './src/procedural/pg-pl-sql/change-user-email.js';
 const sutPathProceduralJS = './src/procedural/javascript/change-user-email.js';
-const sutPathOOPHexagonalEventJS = './src/object-oriented/hexagonal-event/code/application/user-handler.js';
+const sutPathOOPHexagonalEventJS = './src/object-oriented/hexagonal-event/code/user-side/user-handler.js';
 
 // Choose which implementation to execute
 const sutPath = sutPathOOPHexagonalEventJS;

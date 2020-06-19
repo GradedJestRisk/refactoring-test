@@ -5,7 +5,7 @@ chai.should();
 const mut = require('../../code/user-side/user-controller').getUser;
 
 // Test helpers
-const db = require('./../../../../../test/characterization/database-helper');
+const db = require('../../../../../test/database-helper');
 const userMother = require('../helper/object-mother/user');
 
 // Constants
