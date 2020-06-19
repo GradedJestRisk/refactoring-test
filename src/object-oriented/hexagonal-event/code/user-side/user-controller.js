@@ -7,7 +7,8 @@ const knex = require('../../../../../knex/knex');
 const message = {
     SUCCESSFUL_EXECUTION: 'OK',
     EMAIL_IS_ALREADY_TAKEN: 'email is taken',
-    USER_DOES_NOT_EXISTS: 'user does not exists'
+    USER_DOES_NOT_EXISTS: 'user does not exists',
+    EMAIL_ALREADY_CONFIRMED: 'can not change email after after its confirmation'
 }
 
 const changeUserEmail = async function ({messageBus, id, newEmail}) {
@@ -15,6 +16,7 @@ const changeUserEmail = async function ({messageBus, id, newEmail}) {
     try {
         return await knex.transaction(async function (transaction) {
 
+            // Call repository with canExecute pattern
             if (!await userRepository.userExists(transaction, id)) {
                 return message.USER_DOES_NOT_EXISTS;
             }
@@ -28,11 +30,8 @@ const changeUserEmail = async function ({messageBus, id, newEmail}) {
             const user = new User(userData);
 
             // Call domain with canExecute pattern
-            const errorMessage = user.canChangeEmail();
-
-            if (errorMessage != null) {
-                console.log('errorMessage' + errorMessage);
-                return errorMessage;
+            if (!user.canChangeEmail()) {
+                return message.EMAIL_ALREADY_CONFIRMED;
             }
 
             // Get data
