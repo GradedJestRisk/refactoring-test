@@ -16,6 +16,7 @@
     "test:oop-hexagonal-event-js:char": "SUT=OOP_HEXAGONAL-EVENT_JS mocha --exit test/characterization/change-user-email.test.js",
     "test:oop-hexagonal-event-js:unit": "mocha --exit src/object-oriented/hexagonal-event/test/unit/**/*.test.js",
     "test:oop-hexagonal-event-js:integ": "mocha --exit src/object-oriented/hexagonal-event/test/integration/**/*.test.js",
+    "test:oop-hexagonal-event-js:end-to-end": "mocha --exit src/object-oriented/hexagonal-event/test/end-to-end/**/*.test.js",
     "show-verbosity": "node src/show-verbosity.js"
   },
   "husky": {
