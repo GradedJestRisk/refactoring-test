@@ -59,9 +59,12 @@ const init = async () => {
         }
     ]);
 
-
     await server.start();
     console.log('Server running on %s', server.info.uri);
+
+    server.events.on('response', function (request) {
+        console.log(request.info.remoteAddress + ': ' + request.method.toUpperCase() + ' ' + request.path + ' --> ' + request.response.statusCode);
+    });
 };
 
 process.on('unhandledRejection', (err) => {

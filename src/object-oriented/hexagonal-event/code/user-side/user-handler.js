@@ -9,7 +9,7 @@ const message = {
 
 module.exports = {
     async getUser(request, h) {
-        console.dir(request.params.id);
+
         const id = parseInt(request.params.id);
         const data = await controller.getUser(id);
 

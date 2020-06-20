@@ -172,6 +172,9 @@ You'll need:
 To interactively make API calls on OOP Hexagonal JS:
 * create sample data with seeding, run `npx knex seed:run`
 * run `npm start`
+* make a call to API `curl --location --request GET 'http://localhost:3000/health_check'`
+* you'll get `{"name":"refactoring-test","version":"1.0.0","description":"javascript port of https://www.manning.com/books/unit-testing C# refactor kata"}% `
+* you'll see the call in server log `127.0.0.1: GET /health_check --> 200`
 
 To run characterization tests interactively in your IDE on an implementation:
 * alter the following line in [change-user-email.test.js](../master/test/characterization/change-user-email.test.js)
