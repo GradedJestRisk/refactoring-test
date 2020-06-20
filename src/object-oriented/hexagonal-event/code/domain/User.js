@@ -1,4 +1,6 @@
 ﻿const emailChangedEvent = require('../shared/email-changed-event');
+const assert = require('assert').strict;
+
 const userType = {
     Customer: 1,
     Employee: 2
@@ -19,7 +21,7 @@ class User {
 
     changeEmail(newEmail, company) {
 
-        this.canChangeEmail();
+        assert(this.canChangeEmail);
 
         if (this.email === newEmail)
             return;
