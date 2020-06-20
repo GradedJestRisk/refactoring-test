@@ -169,9 +169,8 @@ You'll need:
 
 ## Development purpose
 
-To execute code manually:
+To interactively make API calls on OOP Hexagonal JS:
 * create sample data with seeding, run `npx knex seed:run`
-* choose your implementation by modifying `const sutPath = <IMPLEMENTATION> ` in [server.js](../master/server.js#L6)
 * run `npm start`
 
 To run characterization tests interactively in your IDE on an implementation:

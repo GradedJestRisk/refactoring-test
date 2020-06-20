@@ -7,6 +7,8 @@ const sutPath = sutPathOOPHexagonalEventJS;
 
 const userHandler = require(sutPath);
 
+const packageJSON = require('./package.json');
+
 'use strict';
 
 const Hapi = require('@hapi/hapi');
@@ -23,11 +25,24 @@ const init = async () => {
     server.route([
         {
             method: 'GET',
+            path: '/health_check',
+            config: {
+                handler: () => {
+                    return {
+                        'name': packageJSON.name,
+                        'version': packageJSON.version,
+                        'description': packageJSON.description,
+                    };
+                }
+            }
+        },
+        {
+            method: 'GET',
             path: '/users/{id}',
             config: {
                 validate: {
                     //query: Joi.object().required().keys({
-                     //   id: Joi.number().required()
+                    //   id: Joi.number().required()
                     //}),
                     failAction: (request, h) => {
                         const errorHttpStatusCode = 400;
@@ -43,7 +58,6 @@ const init = async () => {
             }
         }
     ]);
-
 
 
     await server.start();
