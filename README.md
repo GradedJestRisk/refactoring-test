@@ -164,17 +164,19 @@ You'll need:
       password: '<PASSWORD>' 
     },
 ```
-* create DB structure (2 tables): run `npx knex migrate:latest`
-* run the test <code>npm test</code>
+* create DB structure: run `npm run db:create-schema`
+* run the test `npm test`
 
 ## Development purpose
 
 To interactively make API calls on OOP Hexagonal JS:
-* create sample data with seeding, run `npx knex seed:run`
-* run `npm start`
-* make a call to API `curl --location --request GET 'http://localhost:3000/health_check'`
-* you'll get `{"name":"refactoring-test","version":"1.0.0","description":"javascript port of https://www.manning.com/books/unit-testing C# refactor kata"}% `
-* you'll see the call in server log `127.0.0.1: GET /health_check --> 200`
+* create sample data with `npm run db:insert-data`
+* start API with `npm start`
+* check it's up
+    * make a health check call `curl --request GET 'http://localhost:3000/health_check'`
+    * check the response `{"name":"refactoring-test","version":"1.0.0","description":"javascript port of https://www.manning.com/books/unit-testing C# refactor kata"}% `
+    * check the log `127.0.0.1: GET /health_check --> 200`
+* make an actual call  `curl --request GET 'http://localhost:3000/users/0'`
 
 To run characterization tests interactively in your IDE on an implementation:
 * alter the following line in [change-user-email.test.js](../master/test/characterization/change-user-email.test.js)
@@ -212,6 +214,6 @@ Units:
 
 ## Details
 To get:
-* size (chars), run <code>npm run show:verbosity</code>
+* size (chars), run `npm run show:verbosity`
 * execution time
-    * procedural pl/sql, execute function <code>SELECT get_execution_time_micro();</code>
+    * procedural pl/sql, execute function `SELECT get_execution_time_micro();`
