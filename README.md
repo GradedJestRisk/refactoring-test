@@ -176,7 +176,13 @@ To interactively make API calls on OOP Hexagonal JS:
     * make a health check call `curl --request GET 'http://localhost:3000/health_check'`
     * check the response `{"name":"refactoring-test","version":"1.0.0","description":"javascript port of https://www.manning.com/books/unit-testing C# refactor kata"}% `
     * check the log `127.0.0.1: GET /health_check --> 200`
-* make an actual call  `curl --request GET 'http://localhost:3000/users/0'`
+* make an actual call 
+    * get user: `curl --request GET 'http://localhost:3000/users/0'`
+    * change its email:    
+    `curl --header "Content-Type: application/json" \`
+    `--request POST \`
+    `--data '{"id":"0","email":"foo@bar.com"}' \`
+    `localhost:3000/users/0/email`
 
 To run characterization tests interactively in your IDE on an implementation:
 * alter the following line in [change-user-email.test.js](../master/test/characterization/change-user-email.test.js)

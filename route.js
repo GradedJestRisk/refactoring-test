@@ -1,5 +1,5 @@
-const sutPathProceduralDB = './src/procedural/pg-pl-sql/change-user-email.js';
-const sutPathProceduralJS = './src/procedural/javascript/change-user-email.js';
+//const sutPathProceduralDB = './src/procedural/pg-pl-sql/user.js';
+//const sutPathProceduralJS = './src/procedural/javascript/user.js';
 const sutPathOOPHexagonalEventJS = './src/object-oriented/hexagonal-event/code/user-side/user-handler.js';
 
 // Choose which implementation to execute
@@ -44,6 +44,28 @@ const routes = [
                 }
             },
             handler: userHandler.getUser
+        }
+    },
+    {
+        method: 'POST',
+        path: '/users/{id}/email',
+        config: {
+            validate: {
+                payload: Joi.object({
+                    id: Joi.number().integer().required(),
+                    email: Joi.string().email().required()
+                }),
+                failAction: (request, h , err) => {
+                    const errorHttpStatusCode = 400;
+                    const jsonApiError = new JSONAPIError({
+                        status: errorHttpStatusCode.toString(),
+                        title: 'Bad request',
+                        detail: err.details[0].message,
+                    });
+                    return h.response(jsonApiError).code(errorHttpStatusCode).takeover();
+                }
+            },
+            handler: userHandler.changeUserEmail
         }
     }
 ];

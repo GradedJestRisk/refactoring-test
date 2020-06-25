@@ -1,23 +1,16 @@
-let sutPath;
-
-const sutPathProceduralDB = '../../src/procedural/pg-pl-sql/change-user-email.js';
-const sutPathProceduralJS = '../../src/procedural/javascript/change-user-email.js';
-const sutPathOOPHexagonalEventJS = '../../src/object-oriented/hexagonal-event/code/change-user-email.js';
+let changeUserEmail;
 
 if (process.env.SUT === 'PROCEDURAL_JS') {
-    sutPath = sutPathProceduralJS;
+    changeUserEmail = require('../../src/procedural/javascript/change-user-email.js');
 } else if (process.env.SUT === 'PROCEDURAL_DB') {
-    sutPath = sutPathProceduralDB;
+    changeUserEmail = require('../../src/procedural/pg-pl-sql/change-user-email.js')
 } else if (process.env.SUT === 'OOP_HEXAGONAL-EVENT_JS') {
-    sutPath = sutPathOOPHexagonalEventJS;
+    changeUserEmail = require('../../src/object-oriented/hexagonal-event/code/user.js').changeEmail;
 } else {
     // used for interactive
-    sutPath = sutPathOOPHexagonalEventJS;
+    changeUserEmail = require('../../src/object-oriented/hexagonal-event/code/user.js').changeEmail;
 }
-
 // console.log('SUT is' + sutPath);
-
-const changeUserEmail = require(sutPath);
 
 const chai = require('chai');
 const db = require('../database-helper');
@@ -104,9 +97,9 @@ describe('characterization | changeUserEmail', () => {
 
                 await changeUserEmail(emailUpdate);
 
-                if (sutPath === sutPathProceduralJS) {
+                if (process.env.SUT === 'PROCEDURAL_JS') {
                     remoteAPICall.isDone().should.be.true;
-                } else if (sutPath === sutPathProceduralDB) {
+                } else if (process.env.SUT === 'PROCEDURAL_DB') {
                     // change is actually propagated, to check manually use httpry or tcpflow
                     // but Nock can't check out-of-process dependencies, so the check would fail
                     true.should.be.true;
@@ -195,7 +188,7 @@ describe('characterization | changeUserEmail', () => {
                 const emailUpdate = {id: user.id, newEmail};
                 const message = await changeUserEmail(emailUpdate);
 
-                if (sutPath !== sutPathProceduralJS) {
+                if (process.env.SUT !== 'PROCEDURAL_JS') {
                     message.should.eq('OK');
                 }
 
@@ -247,7 +240,7 @@ describe('characterization | changeUserEmail', () => {
 
             let rejectionMessage;
 
-            if (sutPath === sutPathProceduralJS) {
+            if (process.env.SUT === 'PROCEDURAL_JS') {
                 rejectionMessage = "Cannot read property 'email' of undefined";
                 await expect(changeUserEmail(emailUpdate)).to.be.rejectedWith(rejectionMessage);
             } else {
