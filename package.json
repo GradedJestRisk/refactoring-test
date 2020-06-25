@@ -2,14 +2,19 @@
   "name": "refactoring-test",
   "version": "1.0.0",
   "description": "javascript port of https://www.manning.com/books/unit-testing C# refactor kata",
+  "engines": {
+    "node": "14.4.0"
+  },
   "main": "server.js",
   "scripts": {
+    "compile-db-code": "./src/procedural/pg-pl-sql/compile.sh",
     "db:reset": "npm run db:create-schema && npm run db:insert-data",
     "db:create-schema": "npx knex migrate:latest",
     "db:insert-data": "npx knex seed:run",
+    "preinstall": "npx check-engine",
+    "show-verbosity": "node src/show-verbosity.js",
     "start": "node server.js",
     "start:dev": "nodemon start",
-    "compile-db-code": "./src/procedural/pg-pl-sql/compile.sh",
     "test": "npm run test:procedural-js:char && npm run test:procedural-db:char && npm run test:oop-hexagonal-event-js:char && npm run test:oop-hexagonal-event-js:all",
     "test:procedural-js:char": "SUT=PROCEDURAL_JS mocha --exit test/characterization/change-user-email.test.js",
     "test:procedural-db:char": "npm run compile-db-code && SUT=PROCEDURAL_DB mocha --exit test/characterization/change-user-email.test.js",
@@ -19,8 +24,7 @@
     "test:oop-hexagonal-event-js:integ": "mocha --exit src/object-oriented/hexagonal-event/test/integration/**/*.test.js",
     "test:oop-hexagonal-event-js:end-to-end": "run-p  --race start test:oop-hexagonal-event-js:end-to-end:run-test-when-api-available",
     "test:oop-hexagonal-event-js:end-to-end:run-test-when-api-available": "wait-on http-get://localhost:3000/health_check && npm run test:oop-hexagonal-event-js:end-to-end:run-test",
-    "test:oop-hexagonal-event-js:end-to-end:run-test": "mocha --exit src/object-oriented/hexagonal-event/test/end-to-end/**/*.test.js",
-    "show-verbosity": "node src/show-verbosity.js"
+    "test:oop-hexagonal-event-js:end-to-end:run-test": "mocha --exit src/object-oriented/hexagonal-event/test/end-to-end/**/*.test.js"
   },
   "husky": {
     "hooks": {
