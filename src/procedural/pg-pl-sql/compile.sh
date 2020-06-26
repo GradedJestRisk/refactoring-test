@@ -4,6 +4,8 @@ cd src/procedural/pg-pl-sql
 psql -U postgres -d refactoring_test -h localhost -p 8432 <<HEREDOC
 BEGIN;
 
+SET client_min_messages TO WARNING;
+
 \i user-type-from-email.sql
 \i email-change-authorized.sql
 \i get-execution-time.sql
