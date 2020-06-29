@@ -1,5 +1,9 @@
 const knex = require('../knex/knex');
 
+const removeUser = async function (id) {
+    await knex('user').where('id',id).delete();
+};
+
 const removeAllUsers = async function () {
     await knex('user').del();
 };
@@ -7,6 +11,8 @@ const removeAllUsers = async function () {
 const addUser = async function (user) {
     await knex('user').insert([user]);
 };
+
+
 
 const addUsers = async function (users) {
     await Promise.all(
@@ -39,4 +45,14 @@ const removeAll = async function () {
     await removeAllUsers();
 };
 
-module.exports = {removeAllUsers, addUser, addUsers, getUser, removeCompany, addCompany, getCompanyEmployeeCount, removeAll}
+module.exports = {
+    removeUser,
+    removeAllUsers,
+    addUser,
+    addUsers,
+    getUser,
+    removeCompany,
+    addCompany,
+    getCompanyEmployeeCount,
+    removeAll
+}

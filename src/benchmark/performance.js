@@ -23,9 +23,11 @@ const testTasks = [
     'oop-hexagonal-event-js:end-to-end',
 ]
 
+console.log('#########################################"');
 
 testTasks.map((suffix)=> {
 
+    console.log('Executing ' + suffix + ' tests through ' + ITERATION_COUNT + ' iterations');
     const beginDate = Date.now();
 
     for (let i = 0; i < ITERATION_COUNT; i++){
@@ -39,7 +41,7 @@ testTasks.map((suffix)=> {
     // https://stackoverflow.com/questions/11832914/round-to-at-most-2-decimal-places-only-if-necessary
     const elapsedAverageRounded = Math.round((elapsedAverage + Number.EPSILON) * 100) / 100;
 
-    console.log(suffix + ' elapsed (s): ' + elapsedAverageRounded);
+    console.log('average elapsed (s): ' + elapsedAverageRounded);
 
 })
 
