@@ -208,10 +208,9 @@ Units:
 
 | Implementation     | Code <br> size   | Code <br> execution time | Unit test <br> size  | Unit test <br>  execution time | Integration test <br> size  | Integration test <br> execution time | Char. test <br> execution time | End-to-end test <br> size | End-to-end test <br> execution time
 |--------------------|---------------|----------|----------|-------|---------|---------|-------|-------|-------|
-| Procedural DB      | 4 250         | 1        | N/A      | N/A   | N/A     | N/A     | 1000  |   N/A |   N/A |     
-| Procedural JS      | 2 750         | ?        |  N/A     | N/A   | N/A     | N/A     | 2000  |   N/A |   N/A |
-| OOP Hexagonal JS   | 5 590         | 220      | 2 500    | 370   | 4258    | 570     | 2000  |  3496 |  2101 |
-     
+| Procedural DB      | 4 250         | 1 (3 from node)     | N/A      | N/A   | N/A     | N/A     | 1 000  |   N/A  |   N/A |     
+| Procedural JS      | 2 750         | 220                 |  N/A     | N/A   | N/A     | N/A     | 2 000  |   N/A  |   N/A |
+| OOP Hexagonal JS   | 5 590         | 220                 | 2 500    | 370   | 4 258   | 570     | 2 000  |  3 496 | 2 101 |
 
 | Helper            | Code     |
 |-------------------|----------|
@@ -220,3 +219,4 @@ Units:
 
 ## Details
 Run `npm run benchmark`
+To get procedural pl/sql execution time out of node, execute function `SELECT get_execution_time_micro();`
