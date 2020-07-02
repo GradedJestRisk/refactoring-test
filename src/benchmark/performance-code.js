@@ -1,14 +1,22 @@
 let changeUserEmail;
 
-if (process.env.SUT === 'PROCEDURAL_JS') {
-    changeUserEmail = require('../../src/procedural/javascript/change-user-email.js');
-} else if (process.env.SUT === 'PROCEDURAL_DB') {
-    changeUserEmail = require('../../src/procedural/pg-pl-sql/change-user-email.js')
-} else if (process.env.SUT === 'OOP_HEXAGONAL-EVENT_JS') {
-    changeUserEmail = require('../../src/object-oriented/hexagonal-event/code/user.js').changeEmail;
+const codePath = {
+    oopHexagonal: '../../src/object-oriented/hexagonal-event/code/user.js',
+    proceduralDB: '../../src/procedural/pg-pl-sql/change-user-email.js',
+    proceduralJS: '../../src/procedural/javascript/change-user-email.js'
+}
+
+const codeImplementation = process.env.SUT;
+
+if (codeImplementation === 'PROCEDURAL_JS') {
+    changeUserEmail = require(codePath.proceduralJS);
+} else if (codeImplementation === 'PROCEDURAL_DB') {
+    changeUserEmail = require(codePath.proceduralDB);
+} else if (codeImplementation === 'OOP_HEXAGONAL-EVENT_JS') {
+    changeUserEmail = require(codePath.oopHexagonal).changeEmail;
 } else {
     // used for interactive
-    changeUserEmail = require('../../src/object-oriented/hexagonal-event/code/user.js').changeEmail;
+    changeUserEmail = require(codePath.proceduralJS);
 }
 
 const MILLISECONDS_IN_SECONDS = 1000;
@@ -24,9 +32,8 @@ const message = {
 // IIAFE
 (async () => {
 
-
-    console.log('#########################################"');
-    console.log('Executing OOP code through ' + ITERATION_COUNT + ' iterations');
+    console.log('#################################################################################################');
+    console.log('Executing ' + codeImplementation + ' implementation ' + ITERATION_COUNT + ' times');
 
     let actualMessage;
     const firstEmail = 'employee_three@this-corp.com';
@@ -47,20 +54,23 @@ const message = {
         }
 
         actualMessage = await changeUserEmail({id: user.id, newEmail: currentEmail});
-        if (actualMessage !== message.SUCCESSFUL_EXECUTION){
+        if (actualMessage && actualMessage !== message.SUCCESSFUL_EXECUTION) {
             throw actualMessage;
         }
     }
 
     const elapsedTotal = Date.now() - beginDate;
-    const elapsedAverage = elapsedTotal / ITERATION_COUNT / MILLISECONDS_IN_SECONDS;
+    const elapsedAverageMilliseconds = elapsedTotal / ITERATION_COUNT;
+    console.log('average elapsed (ms): ' + elapsedAverageMilliseconds);
+
+    const elapsedAverageSeconds = elapsedAverageMilliseconds / MILLISECONDS_IN_SECONDS;
 
     // https://stackoverflow.com/questions/11832914/round-to-at-most-2-decimal-places-only-if-necessary
-    const elapsedAverageRounded = Math.round((elapsedAverage + Number.EPSILON) * 100) / 100;
+    const elapsedAverageRounded = Math.round((elapsedAverageSeconds + Number.EPSILON) * 100) / 100;
 
     console.log('average elapsed (s): ' + elapsedAverageRounded);
 
-    process.exit( 0);
+    process.exit(0);
 
 })()
 
